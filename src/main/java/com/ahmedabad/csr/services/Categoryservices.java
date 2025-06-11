@@ -7,4 +7,5 @@ import com.ahmedabad.csr.entities.Category;
 public interface Categoryservices {
  Category saveCategory(Category category);
  List<Category> getAllCategory();
+ Category getCategoryById(int id) ;
 }
