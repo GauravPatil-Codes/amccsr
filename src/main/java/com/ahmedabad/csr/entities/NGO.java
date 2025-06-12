@@ -1,15 +1,18 @@
 package com.ahmedabad.csr.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "ngos")
 public class NGO {
- @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String organizationName;
@@ -32,6 +35,11 @@ public class NGO {
     private String moa;
     private String captchaCode;
     private String status;
+   
+
+ @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category") // this must match the column in your NGO table
+    private Category  category;
 
     // Default constructor
     public NGO() {
@@ -43,7 +51,7 @@ public class NGO {
             String ngo80GregistrationNumber, String ngo80Gdocument, String ngo12AregistrationNumber,
             String ngo12Adocument, String caCertifiedStatementUpload, String organizationRegistrationCertificate,
             String csr1RegistartionNumber, String csr1Document, String bylaws, String moa, String captchaCode,
-            String status) {
+            String status, Category category) {
         this.id = id;
         this.organizationName = organizationName;
         this.emailId = emailId;
@@ -65,6 +73,7 @@ public class NGO {
         this.moa = moa;
         this.captchaCode = captchaCode;
         this.status = status;
+        this.category = category;
     }
 
     // Getters and Setters
@@ -236,6 +245,14 @@ public class NGO {
         this.status = status;
     }
 
+    public Category  getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category  category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "NGO [id=" + id + ", organizationName=" + organizationName + ", emailId=" + emailId + ", userName="
@@ -246,6 +263,7 @@ public class NGO {
                 + ", caCertifiedStatementUpload=" + caCertifiedStatementUpload
                 + ", organizationRegistrationCertificate=" + organizationRegistrationCertificate
                 + ", csr1RegistartionNumber=" + csr1RegistartionNumber + ", csr1Document=" + csr1Document + ", bylaws="
-                + bylaws + ", moa=" + moa + ", captchaCode=" + captchaCode + ", status=" + status + "]";
+                + bylaws + ", moa=" + moa + ", captchaCode=" + captchaCode + ", status=" + status + ",catagory="
+                + category + "]";
     }
 }

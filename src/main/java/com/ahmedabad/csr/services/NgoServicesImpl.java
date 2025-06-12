@@ -1,5 +1,7 @@
 package com.ahmedabad.csr.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,8 @@ import com.ahmedabad.csr.repository.NgoRepository;
 public class NgoServicesImpl implements NgoServices {
 
     private NgoRepository ngoRepository;
- @Autowired
+
+    @Autowired
     public NgoServicesImpl(NgoRepository ngoRepository) {
         this.ngoRepository = ngoRepository;
     }
@@ -27,13 +30,12 @@ public class NgoServicesImpl implements NgoServices {
 
     @Override
     public NGO saveNGO(NGO ngo) {
-        // FIXED: Using correct getter methods
-        if (isEmailExists(ngo.getEmailId())) {
-            throw new RuntimeException("Email ID already exists: " + ngo.getEmailId());
-        }
-        if (isUserNameExists(ngo.getUserName())) {
-            throw new RuntimeException("Username already exists: " + ngo.getUserName());
-        }
         return ngoRepository.save(ngo);
     }
+
+    // listall
+    @Override
+    public List<NGO> getAllNGO() {
+        return ngoRepository.findAll();
+        }
 }
