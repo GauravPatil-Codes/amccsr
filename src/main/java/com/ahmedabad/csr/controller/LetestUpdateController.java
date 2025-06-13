@@ -1,6 +1,6 @@
 package com.ahmedabad.csr.controller;
 
-import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ahmedabad.csr.entities.Category;
+
 import com.ahmedabad.csr.entities.LetestUpdate;
-import com.ahmedabad.csr.entities.NGO;
+
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.repository.LetestUpdateRepository;
 import com.ahmedabad.csr.services.LetestUpdateServices;

@@ -1,6 +1,5 @@
 package com.ahmedabad.csr.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ahmedabad.csr.entities.Category;
 import com.ahmedabad.csr.entities.NGO;
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.repository.NgoRepository;

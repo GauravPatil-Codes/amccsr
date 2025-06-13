@@ -3,10 +3,8 @@ package com.ahmedabad.csr.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import com.ahmedabad.csr.entities.LetestUpdate;
 import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ProjectRepository;
 
@@ -29,8 +27,8 @@ public class ProjectServicesImpl implements ProjectServices {
         existing.setProjectStatus(project.getProjectStatus());
         existing.setNgoId(project.getNgoId());
         existing.setCategoryId(project.getCategoryId());
-     existing.setProjectImages(project.getProjectImages());
-     existing.setProjectMainImage(project.getProjectMainImage());
+        existing.setProjectImages(project.getProjectImages());
+        existing.setProjectMainImage(project.getProjectMainImage());
         existing.setProjectBudget(project.getProjectBudget());
         existing.setProjectLocation(project.getProjectLocation());
         existing.setImpactpeople(project.getImpactpeople());
@@ -41,29 +39,18 @@ public class ProjectServicesImpl implements ProjectServices {
         return projectRepository.save(existing);
     }
 
-    // @Override
-    // public void deleteProject(int projetcId) {
-    //     projectRepository.deleteById(projetcId);
-    // }
-
- @Override
+    @Override
     public void deleteProject(int projetcId) {
         Project projetc = projectRepository.findById(projetcId)
                 .orElseThrow(() -> new RuntimeException("Latest Update not found"));
         projectRepository.delete(projetc);
     }
 
- @Override
- public Optional<Project> getProjectById(int projetcId) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getProjectById'");
- }
+    @Override
+    public Optional<Project> getProjectById(int projetcId) {
+       
+        throw new UnsupportedOperationException("Unimplemented method 'getProjectById'");
+    }
 
-
-    // @Override
-    // public Page<Project> listAllProjects(Pageable pageable) {
-    // return projectRepository.findAll(pageable);
-    // }
-
-}
   
+}
