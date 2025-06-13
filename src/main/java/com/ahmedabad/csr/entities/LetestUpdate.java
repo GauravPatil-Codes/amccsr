@@ -16,6 +16,7 @@ public class LetestUpdate {
     private String letestupdatetitle;
     private String letestupdatedesc;
     private String letestupdateimage;
+  
     public int getLetestupdateid() {
         return letestupdateid;
     }
