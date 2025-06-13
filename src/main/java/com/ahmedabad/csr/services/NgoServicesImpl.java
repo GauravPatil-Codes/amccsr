@@ -38,4 +38,6 @@ public class NgoServicesImpl implements NgoServices {
     public List<NGO> getAllNGO() {
         return ngoRepository.findAll();
         }
+
+    
 }

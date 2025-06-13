@@ -1,14 +1,18 @@
 package com.ahmedabad.csr.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,4 +71,63 @@ public class NgoController {
 
     return ResponseEntity.ok(new ApiResponse<>(200, "NGOs fetched successfully", ngos));
   }
+
+
+  // update
+  @PutMapping("/updateNgo/{id}")
+public ResponseEntity<NGO> updateNgo(@PathVariable int id, @RequestBody NGO updatedNgo) {
+    Optional<NGO> optionalNgo = ngoRepository.findById(id);
+
+    if (optionalNgo.isPresent()) {
+        NGO existingNgo = optionalNgo.get();
+
+        existingNgo.setOrganizationName(updatedNgo.getOrganizationName());
+        existingNgo.setEmailId(updatedNgo.getEmailId());
+        existingNgo.setUserName(updatedNgo.getUserName());
+        existingNgo.setPassword(updatedNgo.getPassword());
+        existingNgo.setAgeOfOrganization(updatedNgo.getAgeOfOrganization());
+        existingNgo.setAnnualTurnover(updatedNgo.getAnnualTurnover());
+        existingNgo.setNameOfContactPerson(updatedNgo.getNameOfContactPerson());
+        existingNgo.setContactNumber(updatedNgo.getContactNumber());
+        existingNgo.setNgo80GregistrationNumber(updatedNgo.getNgo80GregistrationNumber());
+        existingNgo.setNgo80Gdocument(updatedNgo.getNgo80Gdocument());
+        existingNgo.setNgo12AregistrationNumber(updatedNgo.getNgo12AregistrationNumber());
+        existingNgo.setNgo12Adocument(updatedNgo.getNgo12Adocument());
+        existingNgo.setCaCertifiedStatementUpload(updatedNgo.getCaCertifiedStatementUpload());
+        existingNgo.setOrganizationRegistrationCertificate(updatedNgo.getOrganizationRegistrationCertificate());
+        existingNgo.setCsr1RegistartionNumber(updatedNgo.getCsr1RegistartionNumber());
+        existingNgo.setCsr1Document(updatedNgo.getCsr1Document());
+        existingNgo.setBylaws(updatedNgo.getBylaws());
+        existingNgo.setMoa(updatedNgo.getMoa());
+        existingNgo.setCaptchaCode(updatedNgo.getCaptchaCode());
+        existingNgo.setStatus(updatedNgo.getStatus());
+        existingNgo.setCategory(updatedNgo.getCategory()); // if needed
+
+        NGO saved = ngoRepository.save(existingNgo);
+        return ResponseEntity.ok(saved);
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
+
+// delete
+@DeleteMapping("/deleteNgo/{id}")
+public ResponseEntity<String> deleteNgo(@PathVariable int id) {
+    if (ngoRepository.existsById(id)) {
+        ngoRepository.deleteById(id);
+        return ResponseEntity.ok("NGO deleted successfully.");
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NGO not found.");
+    }
+}
+
+// show
+@GetMapping("/getNgoById/{id}")
+public ResponseEntity<NGO> getNgoById(@PathVariable int id) {
+    Optional<NGO> ngo = ngoRepository.findById(id);
+    return ngo.map(ResponseEntity::ok)
+              .orElseGet(() -> ResponseEntity.notFound().build());
+}
+
+
 }
