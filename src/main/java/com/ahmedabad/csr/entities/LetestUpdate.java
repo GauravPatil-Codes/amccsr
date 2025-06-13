@@ -37,6 +37,11 @@ public class LetestUpdate {
     public String getLetestupdateimage() {
         return letestupdateimage;
     }
+
+       public LetestUpdate() {
+       
+    }
+
     @Override
     public String toString() {
         return "LetestUpdate [letestupdateid=" + letestupdateid + ", letestupdatetitle=" + letestupdatetitle

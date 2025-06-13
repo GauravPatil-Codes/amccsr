@@ -4,6 +4,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ahmedabad.csr.entities.LetestUpdate;
 
-public interface LetestupdateRepository extends JpaRepository<LetestUpdate, Integer> {
-
-}
+public interface LetestUpdateRepository extends JpaRepository<LetestUpdate, Integer> { }

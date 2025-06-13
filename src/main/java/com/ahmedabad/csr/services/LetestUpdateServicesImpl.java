@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 
 import com.ahmedabad.csr.entities.Category;
 import com.ahmedabad.csr.entities.LetestUpdate;
-import com.ahmedabad.csr.repository.LetestupdateRepository;
+import com.ahmedabad.csr.repository.LetestUpdateRepository;
 
 @Service
 public class LetestUpdateServicesImpl implements LetestUpdateServices {
-    private LetestupdateRepository letestupdateRepository;
+    private LetestUpdateRepository letestupdateRepository;
 
     @Autowired
-    public LetestUpdateServicesImpl(LetestupdateRepository letestupdateRepository) {
+    public LetestUpdateServicesImpl(LetestUpdateRepository letestupdateRepository) {
         this.letestupdateRepository = letestupdateRepository;
     }
     

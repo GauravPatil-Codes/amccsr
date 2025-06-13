@@ -6,6 +6,5 @@ import com.ahmedabad.csr.entities.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-    // JpaRepository provides save, findAll, findById, delete methods automatically
-    // You can add custom query methods here if needed
+    
 }
