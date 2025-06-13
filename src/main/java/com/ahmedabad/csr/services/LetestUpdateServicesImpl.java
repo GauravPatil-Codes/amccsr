@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ahmedabad.csr.entities.Category;
 import com.ahmedabad.csr.entities.LetestUpdate;
 import com.ahmedabad.csr.repository.LetestUpdateRepository;
 
@@ -17,7 +16,7 @@ public class LetestUpdateServicesImpl implements LetestUpdateServices {
     public LetestUpdateServicesImpl(LetestUpdateRepository letestupdateRepository) {
         this.letestupdateRepository = letestupdateRepository;
     }
-    
+
     @Override
     public LetestUpdate saveletectupdates(LetestUpdate letestUpdate) {
         return letestupdateRepository.save(letestUpdate);
@@ -35,23 +34,29 @@ public class LetestUpdateServicesImpl implements LetestUpdateServices {
         return letestupdateRepository.findById(letestupdateid).orElse(null);
     }
 
+    // update
     @Override
-    public LetestUpdate updateletestUpdate(int letestupdateid, LetestUpdate updatedletestUpdates) {
+    public LetestUpdate updateletestUpdate(int letestupdateid, LetestUpdate updatedLetestUpdate) {
         LetestUpdate existingLetestUpdate = getLetestupdateById(letestupdateid);
-        existingLetestUpdate.setLetestupdatetitle(updatedletestUpdates.getLetestupdatetitle());
-        existingLetestUpdate.setLetestupdatedesc(updatedletestUpdates.getLetestupdatedesc());
-        existingLetestUpdate.setLetestupdateimage(updatedletestUpdates.getLetestupdateimage());
+        if (updatedLetestUpdate.getLetestupdatetitle() != null) {
+            existingLetestUpdate.setLetestupdatetitle(updatedLetestUpdate.getLetestupdatetitle());
+        }
+        if (updatedLetestUpdate.getLetestupdatedesc() != null) {
+            existingLetestUpdate.setLetestupdatedesc(updatedLetestUpdate.getLetestupdatedesc());
+        }
+        if (updatedLetestUpdate.getLetestupdateimage() != null) {
+            existingLetestUpdate.setLetestupdateimage(updatedLetestUpdate.getLetestupdateimage());
+        }
+
         return letestupdateRepository.save(existingLetestUpdate);
     }
 
+    // delete
     @Override
     public void deleteLetestUpdateById(int letestupdateid) {
         LetestUpdate letestUpdate = letestupdateRepository.findById(letestupdateid)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-
+                .orElseThrow(() -> new RuntimeException("Latest Update not found"));
         letestupdateRepository.delete(letestUpdate);
     }
-
-
 
 }
