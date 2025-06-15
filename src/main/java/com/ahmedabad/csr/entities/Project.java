@@ -1,6 +1,5 @@
 package com.ahmedabad.csr.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.ElementCollection;
@@ -46,11 +45,11 @@ public class Project {
                 + projectDEpartmentName + ", projectImages=" + projectImages + "]";
     }
 
-    public int getProjetcId() {
+    public int getProjectId() {
         return projetcId;
     }
 
-    public void setProjetcId(int projetcId) {
+    public void setProjectId(int projetcId) {
         this.projetcId = projetcId;
     }
 
@@ -73,19 +72,19 @@ public class Project {
         this.projectImages = projectImages;
     }
 
-    public String getProjetcName() {
+    public String getProjectName() {
         return projetcName;
     }
 
-    public void setProjetcName(String projetcName) {
+    public void setProjectName(String projetcName) {
         this.projetcName = projetcName;
     }
 
-    public String getProjetcDescription() {
+    public String getProjectDescription() {
         return projetcDescription;
     }
 
-    public void setProjetcDescription(String projetcDescription) {
+    public void setProjectDescription(String projetcDescription) {
         this.projetcDescription = projetcDescription;
     }
 
