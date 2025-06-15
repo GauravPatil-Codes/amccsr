@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ahmedabad.csr.entities.LatestUpdate;
 import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ProjectRepository;
 
@@ -22,8 +23,8 @@ public class ProjectServicesImpl implements ProjectServices {
     public Project updateProject(int id, Project project) {
         Project existing = projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Project not found"));
         // Update fields
-        existing.setProjetcName(project.getProjetcName());
-        existing.setProjetcDescription(project.getProjetcDescription());
+        existing.setProjectName(project.getProjectName());
+        existing.setProjectDescription(project.getProjectDescription());
         existing.setProjectStatus(project.getProjectStatus());
         existing.setNgoId(project.getNgoId());
         existing.setCategoryId(project.getCategoryId());
@@ -46,11 +47,15 @@ public class ProjectServicesImpl implements ProjectServices {
         projectRepository.delete(projetc);
     }
 
+    // @Override
+    // public Optional<Project> getProjectById(int projetcId) {
+       
+    //     throw new UnsupportedOperationException("Unimplemented method 'getProjectById'");
+    // }
+
+   // showbyid
     @Override
     public Optional<Project> getProjectById(int projetcId) {
-       
-        throw new UnsupportedOperationException("Unimplemented method 'getProjectById'");
+        return Optional.of(projectRepository.findById(projetcId).orElse(null));
     }
-
-  
 }

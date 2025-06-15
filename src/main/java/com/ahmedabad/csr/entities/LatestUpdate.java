@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "letestupdate")
-public class LetestUpdate {
+public class LatestUpdate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,45 +17,45 @@ public class LetestUpdate {
     private String letestupdatedesc;
     private String letestupdateimage;
   
-    public int getLetestupdateid() {
+    public int getLatestupdateid() {
         return letestupdateid;
     }
-    public void setLetestupdateid(int letestupdateid) {
+    public void setLatestupdateid(int letestupdateid) {
         this.letestupdateid = letestupdateid;
     }
-    public String getLetestupdatetitle() {
+    public String getLatestupdatetitle() {
         return letestupdatetitle;
     }
-    public void setLetestupdatetitle(String letestupdatetitle) {
+    public void setLatestupdatetitle(String letestupdatetitle) {
         this.letestupdatetitle = letestupdatetitle;
     }
-    public String getLetestupdatedesc() {
+    public String getLatestupdatedesc() {
         return letestupdatedesc;
     }
-    public void setLetestupdatedesc(String letestupdatedesc) {
+    public void setLatestupdatedesc(String letestupdatedesc) {
         this.letestupdatedesc = letestupdatedesc;
     }
-    public String getLetestupdateimage() {
+    public String getLatestupdateimage() {
         return letestupdateimage;
     }
 
-       public LetestUpdate() {
+       public LatestUpdate() {
        
     }
 
     @Override
     public String toString() {
-        return "LetestUpdate [letestupdateid=" + letestupdateid + ", letestupdatetitle=" + letestupdatetitle
+        return "LatestUpdate [letestupdateid=" + letestupdateid + ", letestupdatetitle=" + letestupdatetitle
                 + ", letestupdatedesc=" + letestupdatedesc + ", letestupdateimage=" + letestupdateimage + "]";
     }
-    public LetestUpdate(int letestupdateid, String letestupdatetitle, String letestupdatedesc,
+    public LatestUpdate(int letestupdateid, String letestupdatetitle, String letestupdatedesc,
             String letestupdateimage) {
         this.letestupdateid = letestupdateid;
         this.letestupdatetitle = letestupdatetitle;
         this.letestupdatedesc = letestupdatedesc;
         this.letestupdateimage = letestupdateimage;
     }
-    public void setLetestupdateimage(String letestupdateimage) {
+    public void setLatestupdateimage(String letestupdateimage) {
         this.letestupdateimage = letestupdateimage;
     }
 }

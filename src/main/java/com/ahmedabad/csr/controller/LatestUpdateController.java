@@ -13,11 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import com.ahmedabad.csr.entities.LetestUpdate;
+import com.ahmedabad.csr.entities.LatestUpdate;
 
 import com.ahmedabad.csr.repository.ApiResponse;
-import com.ahmedabad.csr.repository.LetestUpdateRepository;
-import com.ahmedabad.csr.services.LetestUpdateServices;
+import com.ahmedabad.csr.repository.LatestUpdateRepository;
+import com.ahmedabad.csr.services.LatestUpdateServices;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,39 +27,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-public class LetestUpdateController {
+public class LatestUpdateController {
     @Autowired
-    private LetestUpdateRepository letestupdateRepository;
+    private LatestUpdateRepository letestupdateRepository;
 
     @Autowired
-    private LetestUpdateServices letestUpdateServices;
+    private LatestUpdateServices letestUpdateServices;
 
-    @PostMapping("/AddLetestupdates")
-    public ResponseEntity<ApiResponse<LetestUpdate>> addLetestUpdates(@RequestBody LetestUpdate letestUpdate) {
-        LetestUpdate savedLetestUpdates = letestupdateRepository.save(letestUpdate);
-        ApiResponse<LetestUpdate> response = new ApiResponse<>(200, "Letets Update added successfully",
-                savedLetestUpdates);
+    @PostMapping("/AddLatestupdates")
+    public ResponseEntity<ApiResponse<LatestUpdate>> addLatestUpdates(@RequestBody LatestUpdate letestUpdate) {
+        LatestUpdate savedLatestUpdates = letestupdateRepository.save(letestUpdate);
+        ApiResponse<LatestUpdate> response = new ApiResponse<>(200, "Letets Update added successfully",
+                savedLatestUpdates);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/listallLetestUpdates")
-    public ResponseEntity<ApiResponse<Page<LetestUpdate>>> listAllLetestUpdates(
+    @GetMapping("/listallLatestUpdates")
+    public ResponseEntity<ApiResponse<Page<LatestUpdate>>> listAllLatestUpdates(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("letestupdateid").descending());
-        Page<LetestUpdate> letestUpdates = letestupdateRepository.findAll(pageable);
+        Page<LatestUpdate> letestUpdates = letestupdateRepository.findAll(pageable);
 
-        ApiResponse<Page<LetestUpdate>> response = new ApiResponse<>(200, "Letest updates fetched successfully",
+        ApiResponse<Page<LatestUpdate>> response = new ApiResponse<>(200, "Latest updates fetched successfully",
                 letestUpdates);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/letestupdateshowbyid/{letestupdateid}")
     public ResponseEntity<ApiResponse<?>> getCategoryById(@PathVariable int letestupdateid) {
-        Optional<LetestUpdate> letestUpdate = letestupdateRepository.findById(letestupdateid);
+        Optional<LatestUpdate> letestUpdate = letestupdateRepository.findById(letestupdateid);
 
         if (letestUpdate.isPresent()) {
-            ApiResponse<LetestUpdate> response = new ApiResponse<>(200, "letest Update fetched successfully",
+            ApiResponse<LatestUpdate> response = new ApiResponse<>(200, "letest Update fetched successfully",
                     letestUpdate.get());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
@@ -69,25 +69,25 @@ public class LetestUpdateController {
     }
 
     @PutMapping("/updateletestupdates/{letestupdateid}")
-    public ResponseEntity<ApiResponse<LetestUpdate>> updateLetestUpdate(
+    public ResponseEntity<ApiResponse<LatestUpdate>> updateLatestUpdate(
             @PathVariable int letestupdateid,
-            @RequestBody LetestUpdate updatedLetestUpdate) { // Fixed parameter name
+            @RequestBody LatestUpdate updatedLatestUpdate) { // Fixed parameter name
         try {
-            LetestUpdate updateLetestUpdate = letestUpdateServices.updateletestUpdate(letestupdateid,
-                    updatedLetestUpdate);
-            ApiResponse<LetestUpdate> response = new ApiResponse<>(200, "Latest Updates updated successfully",
-                    updateLetestUpdate);
+            LatestUpdate updateLatestUpdate = letestUpdateServices.updateletestUpdate(letestupdateid,
+                    updatedLatestUpdate);
+            ApiResponse<LatestUpdate> response = new ApiResponse<>(200, "Latest Updates updated successfully",
+                    updateLatestUpdate);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (RuntimeException e) {
-            ApiResponse<LetestUpdate> response = new ApiResponse<>(404, e.getMessage(), null);
+            ApiResponse<LatestUpdate> response = new ApiResponse<>(404, e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/deleteletestupdate/{letestupdateid}")
-    public ResponseEntity<ApiResponse<String>> deleteLetestUpdate(@PathVariable int letestupdateid) {
+    public ResponseEntity<ApiResponse<String>> deleteLatestUpdate(@PathVariable int letestupdateid) {
         try {
-            letestUpdateServices.deleteLetestUpdateById(letestupdateid);
+            letestUpdateServices.deleteLatestUpdateById(letestupdateid);
             ApiResponse<String> response = new ApiResponse<>(200, "Latest updates deleted successfully", null);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (RuntimeException e) {
