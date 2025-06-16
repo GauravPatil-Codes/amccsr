@@ -86,25 +86,7 @@ public class ProjectController {
     return ResponseEntity.ok(new ApiResponse<>(200, "projects fetched successfully", project));
   }
 
-//   // projectby category id
-// @GetMapping("/projectshowbycategoryid/{categoryId}")
-// public ResponseEntity<Map<String, Object>> getProjectByCategoryId(@PathVariable int categoryId) {
-//     List<Project> projects = projectRepository.findByCategoryId(categoryId);
-
-//     Map<String, Object> response = new HashMap<>();
-//     if (projects != null && !projects.isEmpty()) {
-//         response.put("status", 200);
-//         response.put("message", "Projects found by category ID successfully");
-//         response.put("data", projects);
-//         return ResponseEntity.ok(response);
-//     } else {
-//         response.put("status", 404);
-//         response.put("message", "No projects found for this category ID");
-//         return ResponseEntity.status(404).body(response);
-//     }
-// }
-
-
+  // projectby category id
 @GetMapping("/projectshowbycategoryid/{categoryId}")
 public ResponseEntity<Map<String, Object>> getProjectByCategoryId(
         @PathVariable int categoryId,
@@ -130,5 +112,56 @@ public ResponseEntity<Map<String, Object>> getProjectByCategoryId(
     }
 }
 
+ // projectby category id
+@GetMapping("/projectshowbyngoid/{ngoId}")
+public ResponseEntity<Map<String, Object>> getProjectByNgoId(
+        @PathVariable int ngoId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Project> projectPage = projectRepository.findByNgoId(ngoId, pageable);
+
+    Map<String, Object> response = new HashMap<>();
+    if (projectPage.hasContent()) {
+        response.put("status", 200);
+        response.put("message", "Projects found by NGO ID successfully");
+        response.put("data", projectPage.getContent());
+        response.put("currentPage", projectPage.getNumber());
+        response.put("totalItems", projectPage.getTotalElements());
+        response.put("totalPages", projectPage.getTotalPages());
+        return ResponseEntity.ok(response);
+    } else {
+        response.put("status", 404);
+        response.put("message", "No projects found for this NGO ID");
+        return ResponseEntity.status(404).body(response);
+    }
+}
+
+ // projectby category id
+@GetMapping("/projectshowbyprojectBudget/{projectBudget}")
+public ResponseEntity<Map<String, Object>> getProjectByBudget(
+        @PathVariable String projectBudget,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Project> projectPage = projectRepository.getProjectByProjectBudget(projectBudget, pageable);
+
+    Map<String, Object> response = new HashMap<>();
+    if (projectPage.hasContent()) {
+        response.put("status", 200);
+        response.put("message", "Projects found by Budget amount successfully");
+        response.put("data", projectPage.getContent());
+        response.put("currentPage", projectPage.getNumber());
+        response.put("totalItems", projectPage.getTotalElements());
+        response.put("totalPages", projectPage.getTotalPages());
+        return ResponseEntity.ok(response);
+    } else {
+        response.put("status", 404);
+        response.put("message", "No projects found for this  Budget amount");
+        return ResponseEntity.status(404).body(response);
+    }
+}
 
 }

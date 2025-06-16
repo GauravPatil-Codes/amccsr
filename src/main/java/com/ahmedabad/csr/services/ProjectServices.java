@@ -17,7 +17,11 @@ public interface ProjectServices {
 
     Optional<Project> getProjectById(int projetcId);
 
-   List<Project> ListAllProject();
-//    List<Project> getprojetcByCategoryId(int categoryId);
-Page<Project> getprojetcByCategoryId(int categoryId, Pageable pageable);
+    List<Project> ListAllProject();
+
+    Page<Project> getprojetcByCategoryId(int categoryId, Pageable pageable);
+
+    Page<Project> getprojetcByNgoId(int ngoId, Pageable pageable);
+
+     Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable) ;
 }

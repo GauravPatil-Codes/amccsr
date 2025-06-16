@@ -67,4 +67,13 @@ public class ProjectServicesImpl implements ProjectServices {
         return projectRepository.findByCategoryId(categoryId, pageable);
     }
 
+      @Override
+    public Page<Project> getprojetcByNgoId(int ngoId, Pageable pageable) {
+        return projectRepository.findByNgoId(ngoId, pageable);
+    }
+ @Override
+   public Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable) {
+    return projectRepository.findByProjectBudget(projectBudget, pageable);
+}
+
 }
