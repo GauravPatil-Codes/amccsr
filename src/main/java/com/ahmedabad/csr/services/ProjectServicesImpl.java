@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import com.ahmedabad.csr.entities.LatestUpdate;
 import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ProjectRepository;
 import org.springframework.data.domain.Pageable;
@@ -74,6 +73,11 @@ public class ProjectServicesImpl implements ProjectServices {
  @Override
    public Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable) {
     return projectRepository.findByProjectBudget(projectBudget, pageable);
+}
+
+@Override
+   public Page<Project> getProjectByProjectStatus(String projectStatus, Pageable pageable) {
+    return projectRepository.findByProjectStatus(projectStatus, pageable);
 }
 
 }

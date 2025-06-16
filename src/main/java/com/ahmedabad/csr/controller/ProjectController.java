@@ -1,7 +1,7 @@
 package com.ahmedabad.csr.controller;
 
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ahmedabad.csr.entities.NGO;
 import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.repository.ProjectRepository;
@@ -138,7 +137,7 @@ public ResponseEntity<Map<String, Object>> getProjectByNgoId(
     }
 }
 
- // projectby category id
+ // projectby budget id
 @GetMapping("/projectshowbyprojectBudget/{projectBudget}")
 public ResponseEntity<Map<String, Object>> getProjectByBudget(
         @PathVariable String projectBudget,
@@ -160,6 +159,34 @@ public ResponseEntity<Map<String, Object>> getProjectByBudget(
     } else {
         response.put("status", 404);
         response.put("message", "No projects found for this  Budget amount");
+        return ResponseEntity.status(404).body(response);
+    }
+}
+
+
+// projectby status id
+// @GetMapping("/projectShowbyProjectStatus/{projectStatus}")
+@GetMapping("/projects/by-status")
+public ResponseEntity<Map<String, Object>> getProjectsByStatus(
+        @RequestParam String status,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Project> projectPage = projectRepository.findByProjectStatus(status, pageable);
+
+    Map<String, Object> response = new HashMap<>();
+    if (projectPage.hasContent()) {
+        response.put("status", 200);
+        response.put("message", "Projects found by status successfully");
+        response.put("data", projectPage.getContent());
+        response.put("currentPage", projectPage.getNumber());
+        response.put("totalItems", projectPage.getTotalElements());
+        response.put("totalPages", projectPage.getTotalPages());
+        return ResponseEntity.ok(response);
+    } else {
+        response.put("status", 404);
+        response.put("message", "No projects found for this status");
         return ResponseEntity.status(404).body(response);
     }
 }
