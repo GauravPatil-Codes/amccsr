@@ -164,8 +164,8 @@ public ResponseEntity<Map<String, Object>> getProjectByBudget(
 }
 
 
-// projectby status id
-// @GetMapping("/projectShowbyProjectStatus/{projectStatus}")
+// projectby status 
+
 @GetMapping("/projects/by-status")
 public ResponseEntity<Map<String, Object>> getProjectsByStatus(
         @RequestParam String status,
