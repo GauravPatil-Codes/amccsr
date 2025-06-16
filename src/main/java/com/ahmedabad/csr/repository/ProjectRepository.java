@@ -11,5 +11,8 @@ import com.ahmedabad.csr.entities.Project;
 public interface ProjectRepository extends JpaRepository<Project , Integer>{       
     Page<Project> findByCategoryId(int categoryId, Pageable pageable);
     Page<Project> findByNgoId(int ngoId, Pageable pageable);
+    // Page<Project> findByBudget(String projectBudget, Pageable pageable);
+Page<Project> findByProjectBudget(String projectBudget, Pageable pageable);
+Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable);
 
 }
