@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.ahmedabad.csr.entities.Participants;
 import com.ahmedabad.csr.repository.ParticipantsRepository;
-import com.ahmedabad.csr.services.ParticipantsService;
 
 @Service
 public class ParticipantsServiceImpl implements ParticipantsService {

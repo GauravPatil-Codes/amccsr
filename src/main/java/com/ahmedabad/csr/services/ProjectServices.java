@@ -23,5 +23,7 @@ public interface ProjectServices {
 
     Page<Project> getprojetcByNgoId(int ngoId, Pageable pageable);
 
-     Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable) ;
+    Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable);
+
+    Page<Project> getProjectByProjectStatus(String projectStatus, Pageable pageable);
 }

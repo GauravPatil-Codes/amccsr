@@ -1,7 +1,6 @@
 package com.ahmedabad.csr.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ahmedabad.csr.entities.Participants;
-import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.repository.ParticipantsRepository;
 import com.ahmedabad.csr.services.ParticipantsService;
