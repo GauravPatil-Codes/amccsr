@@ -1,5 +1,6 @@
 package com.ahmedabad.csr.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,15 +48,14 @@ public class ProjectServicesImpl implements ProjectServices {
         projectRepository.delete(projetc);
     }
 
-    // @Override
-    // public Optional<Project> getProjectById(int projetcId) {
-       
-    //     throw new UnsupportedOperationException("Unimplemented method 'getProjectById'");
-    // }
-
-   // showbyid
+      // showbyid
     @Override
     public Optional<Project> getProjectById(int projetcId) {
         return Optional.of(projectRepository.findById(projetcId).orElse(null));
+    }
+    // listALL
+    @Override
+    public List<Project> ListAllProject(){
+        return projectRepository.findAll();
     }
 }
