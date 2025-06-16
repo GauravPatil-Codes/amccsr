@@ -10,5 +10,6 @@ import com.ahmedabad.csr.entities.Project;
 
 public interface ProjectRepository extends JpaRepository<Project , Integer>{       
     Page<Project> findByCategoryId(int categoryId, Pageable pageable);
+    Page<Project> findByNgoId(int ngoId, Pageable pageable);
 
 }
