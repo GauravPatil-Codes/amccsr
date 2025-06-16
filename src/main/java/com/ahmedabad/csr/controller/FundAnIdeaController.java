@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ahmedabad.csr.entities.FundAnIdea;
-import com.ahmedabad.csr.entities.LatestUpdate;
-import com.ahmedabad.csr.entities.Participants;
+
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.repository.FundAnIdeaRepository;
 import com.ahmedabad.csr.services.FundAnIdeaServices;
@@ -36,10 +35,15 @@ public class FundAnIdeaController {
     private FundAnIdeaRepository fundAnIdeaRepository;
 
     @PostMapping("/addFundanidea")
-    public ResponseEntity<ApiResponse<FundAnIdea>> addFundAnIdea(@RequestBody FundAnIdea fundAnIdea) {
-        FundAnIdea savedFundAnIdea = fundAnIdeaService.saveFundAnIdea(fundAnIdea);
-        return ResponseEntity.ok(new ApiResponse<>(200, "Fund An Idea added successfully", savedFundAnIdea));
-    }
+    // public ResponseEntity<ApiResponse<FundAnIdea>> addFundAnIdea(@RequestBody FundAnIdea fundAnIdea) {
+    //     FundAnIdea savedFundAnIdea = fundAnIdeaService.saveFundAnIdea(fundAnIdea);
+    //     return ResponseEntity.ok(new ApiResponse<>(200, "Fund An Idea added successfully", savedFundAnIdea));
+    // }
+// @PostMapping("/addFundanidea")
+public ResponseEntity<ApiResponse<FundAnIdea>> addFundAnIdea(@RequestBody FundAnIdea fundAnIdea) {
+    FundAnIdea savedFundAnIdea = fundAnIdeaService.saveFundAnIdea(fundAnIdea);
+    return ResponseEntity.ok(new ApiResponse<>(200, "Fund An Idea added successfully", savedFundAnIdea));
+}
 
     @GetMapping("/listallFundanidea")
     public ResponseEntity<ApiResponse<Page<FundAnIdea>>> listAllFundAnIdea(

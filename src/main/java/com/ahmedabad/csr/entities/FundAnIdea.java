@@ -24,6 +24,7 @@ public class FundAnIdea {
     private String fundanideacontactpersonname;
     private String fundanideaestimateamount;
     private String fundanideastatus;
+    private String fundanideatoken;
 
     public FundAnIdea() {
     }
@@ -132,11 +133,19 @@ public class FundAnIdea {
         this.fundanideastatus = fundanideastatus;
     }
 
+    public String getFundanideatoken() {
+    return fundanideatoken;
+}
+
+public void setFundanideatoken(String fundanideatoken) {
+    this.fundanideatoken = fundanideatoken;
+}
+
     public FundAnIdea(int fundanideaid, String natureofproject, String fundanideaprojectname,
             String fundanideaprojectlocation, String fundanideadepartment, String fundanideadocement,
             String fundanideadescription, String fundanideaorganizationname, String fundanideaemailid,
             String fundanideaphonenumber, String fundanideacontactpersonname, String fundanideaestimateamount,
-            String fundanideastatus) {
+            String fundanideastatus,String fundanideatoken) {
         this.fundanideaid = fundanideaid;
         this.natureofproject = natureofproject;
         this.fundanideaprojectname = fundanideaprojectname;
@@ -150,6 +159,7 @@ public class FundAnIdea {
         this.fundanideacontactpersonname = fundanideacontactpersonname;
         this.fundanideaestimateamount = fundanideaestimateamount;
         this.fundanideastatus = fundanideastatus;
+        this.fundanideatoken=fundanideatoken;
     }
 
     @Override
@@ -161,7 +171,7 @@ public class FundAnIdea {
                 + ", fundanideaorganizationname=" + fundanideaorganizationname + ", fundanideaemailid="
                 + fundanideaemailid + ", fundanideaphonenumber=" + fundanideaphonenumber
                 + ", fundanideacontactpersonname=" + fundanideacontactpersonname + ", fundanideaestimateamount="
-                + fundanideaestimateamount + ", fundanideastatus=" + fundanideastatus + "]";
+                + fundanideaestimateamount + ", fundanideastatus=" + fundanideastatus + ",fundanideatoken="+fundanideatoken+"]";
     }
 
 }

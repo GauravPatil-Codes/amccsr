@@ -6,4 +6,6 @@ import com.ahmedabad.csr.entities.FundAnIdea;
 
 public interface FundAnIdeaRepository extends JpaRepository<FundAnIdea, Integer> {
 
+    boolean existsByFundanideatoken(String token);
+
 }

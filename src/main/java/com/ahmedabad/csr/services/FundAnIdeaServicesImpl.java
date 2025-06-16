@@ -15,10 +15,10 @@ public class FundAnIdeaServicesImpl implements FundAnIdeaServices {
     @Autowired
     private FundAnIdeaRepository fundAnIdeaRepository;
 
-    @Override
-    public FundAnIdea saveFundAnIdea(FundAnIdea fundAnIdea) {
-        return fundAnIdeaRepository.save(fundAnIdea);
-    }
+    // @Override
+    // public FundAnIdea saveFundAnIdea(FundAnIdea fundAnIdea) {
+    //     return fundAnIdeaRepository.save(fundAnIdea);
+    // }
 
     @Override
     public List<FundAnIdea> getAllFundAnIdea() {
@@ -54,4 +54,30 @@ public class FundAnIdeaServicesImpl implements FundAnIdeaServices {
     public void deleteFundAnIdea(int fundanideaid) {
     fundAnIdeaRepository.deleteById(fundanideaid);
     }
+
+    @Override
+public FundAnIdea saveFundAnIdea(FundAnIdea fundAnIdea) {
+    String token = generateUniqueToken();
+    fundAnIdea.setFundanideatoken(token);
+    return fundAnIdeaRepository.save(fundAnIdea);
+}
+
+  private String generateUniqueToken() {
+    String token;
+    do {
+        // Generate 10 random digits
+        String randomPart = String.format("%010d", (long)(Math.random() * 1_000_000_0000L));
+        token = "FA" + randomPart;
+    } while (fundAnIdeaRepository.existsByFundanideatoken(token));
+    return token;
+}
+
+
+   @Override
+   public boolean existsByFundanideatoken(String fundanideatoken) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'existsByFundanideatoken'");
+   }
+
+
 }
