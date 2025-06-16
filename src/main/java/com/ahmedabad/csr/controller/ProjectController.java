@@ -1,6 +1,7 @@
 package com.ahmedabad.csr.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -84,4 +85,50 @@ public class ProjectController {
 
     return ResponseEntity.ok(new ApiResponse<>(200, "projects fetched successfully", project));
   }
+
+//   // projectby category id
+// @GetMapping("/projectshowbycategoryid/{categoryId}")
+// public ResponseEntity<Map<String, Object>> getProjectByCategoryId(@PathVariable int categoryId) {
+//     List<Project> projects = projectRepository.findByCategoryId(categoryId);
+
+//     Map<String, Object> response = new HashMap<>();
+//     if (projects != null && !projects.isEmpty()) {
+//         response.put("status", 200);
+//         response.put("message", "Projects found by category ID successfully");
+//         response.put("data", projects);
+//         return ResponseEntity.ok(response);
+//     } else {
+//         response.put("status", 404);
+//         response.put("message", "No projects found for this category ID");
+//         return ResponseEntity.status(404).body(response);
+//     }
+// }
+
+
+@GetMapping("/projectshowbycategoryid/{categoryId}")
+public ResponseEntity<Map<String, Object>> getProjectByCategoryId(
+        @PathVariable int categoryId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Project> projectPage = projectRepository.findByCategoryId(categoryId, pageable);
+
+    Map<String, Object> response = new HashMap<>();
+    if (projectPage.hasContent()) {
+        response.put("status", 200);
+        response.put("message", "Projects found by category ID successfully");
+        response.put("data", projectPage.getContent());
+        response.put("currentPage", projectPage.getNumber());
+        response.put("totalItems", projectPage.getTotalElements());
+        response.put("totalPages", projectPage.getTotalPages());
+        return ResponseEntity.ok(response);
+    } else {
+        response.put("status", 404);
+        response.put("message", "No projects found for this category ID");
+        return ResponseEntity.status(404).body(response);
+    }
+}
+
+
 }

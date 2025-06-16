@@ -21,8 +21,8 @@ public class Project {
     private String projetcName;
     private String projetcDescription;
     private String projectStatus;
-    private String ngoId;
-    private String categoryId;
+    private int ngoId;
+    private int categoryId;
     private String projectMainImage;
     private String projectBudget;
     private String projectLocation;
@@ -57,8 +57,8 @@ public class Project {
         this.projetcId = projetcId;
     }
 
-    public Project(int projetcId, String projetcName, String projetcDescription, String projectStatus, String ngoId,
-            String categoryId, String projectMainImage, String projectBudget, String projectLocation,
+    public Project(int projetcId, String projetcName, String projetcDescription, String projectStatus, int ngoId,
+            int categoryId, String projectMainImage, String projectBudget, String projectLocation,
             String impactpeople, String projectShortDescription, String projectDEpartmentName,
             List<String> projectImages) {
         this.projetcId = projetcId;
@@ -100,19 +100,19 @@ public class Project {
         this.projectStatus = projectStatus;
     }
 
-    public String getNgoId() {
+    public int getNgoId() {
         return ngoId;
     }
 
-    public void setNgoId(String ngoId) {
+    public void setNgoId(int ngoId) {
         this.ngoId = ngoId;
     }
 
-    public String getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 

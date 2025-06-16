@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.ahmedabad.csr.entities.LatestUpdate;
 import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ProjectRepository;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class ProjectServicesImpl implements ProjectServices {
@@ -48,14 +50,21 @@ public class ProjectServicesImpl implements ProjectServices {
         projectRepository.delete(projetc);
     }
 
-      // showbyid
+    // showbyid
     @Override
     public Optional<Project> getProjectById(int projetcId) {
         return Optional.of(projectRepository.findById(projetcId).orElse(null));
     }
+
     // listALL
     @Override
-    public List<Project> ListAllProject(){
+    public List<Project> ListAllProject() {
         return projectRepository.findAll();
     }
+
+    @Override
+    public Page<Project> getprojetcByCategoryId(int categoryId, Pageable pageable) {
+        return projectRepository.findByCategoryId(categoryId, pageable);
+    }
+
 }
