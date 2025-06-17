@@ -15,7 +15,5 @@ public interface FundAnIdeaServices {
     FundAnIdea updateFundAnIdea(int fundanideaid, FundAnIdea fundAnIdea);
 
     void deleteFundAnIdea(int fundanideaid);
-    
-    
-    boolean existsByFundanideatoken(String fundanideatoken);
+
 }

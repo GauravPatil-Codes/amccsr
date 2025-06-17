@@ -15,10 +15,10 @@ public class ParticipantsServiceImpl implements ParticipantsService {
     @Autowired
     private ParticipantsRepository participantsRepository;
 
-    @Override
-    public Participants saveParticipant(Participants participant) {
-        return participantsRepository.save(participant);
-    }
+    // @Override
+    // public Participants saveParticipant(Participants participant) {
+    // return participantsRepository.save(participant);
+    // }
 
     @Override
     public List<Participants> getAllParticipants() {
@@ -46,4 +46,20 @@ public class ParticipantsServiceImpl implements ParticipantsService {
     public void deleteParticipant(int id) {
         participantsRepository.deleteById(id);
     }
+
+    @Override
+    public Participants saveParticipant(Participants participant) {
+        String token = generateUniqueToken();
+        participant.setToken(token);
+        return participantsRepository.save(participant);
+    }
+
+    private String generateUniqueToken() {
+    String token;
+    do {
+        token = "PA" + String.format("%010d", (long) (Math.random() * 1_000_000_0000L));
+    } while (participantsRepository.existsByToken(token));
+    return token;
+}
+
 }
