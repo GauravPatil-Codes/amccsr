@@ -20,10 +20,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ahmedabad.csr.entities.Category;
 import com.ahmedabad.csr.entities.FundAnIdea;
-
+import com.ahmedabad.csr.entities.Participants;
+import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ApiResponse;
+import com.ahmedabad.csr.repository.CategoryRepository;
 import com.ahmedabad.csr.repository.FundAnIdeaRepository;
+import com.ahmedabad.csr.repository.ParticipantsRepository;
+import com.ahmedabad.csr.repository.ProjectRepository;
 import com.ahmedabad.csr.services.FundAnIdeaServices;
 
 @RestController
@@ -33,6 +38,12 @@ public class FundAnIdeaController {
 
     @Autowired
     private FundAnIdeaRepository fundAnIdeaRepository;
+    @Autowired
+    private ParticipantsRepository participantsRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @PostMapping("/addFundanidea")
     public ResponseEntity<ApiResponse<FundAnIdea>> addFundAnIdea(@RequestBody FundAnIdea fundAnIdea) {
@@ -91,4 +102,79 @@ public class FundAnIdeaController {
         response.put("message", "Fund An Idea deleted successfully");
         return ResponseEntity.ok(response);
     }
+
+    // Track Application by token
+    @GetMapping("/trackByToken/{token}")
+    public ResponseEntity<Map<String, Object>> trackByToken(@PathVariable String token) {
+        Map<String, Object> response = new HashMap<>();
+
+        if (token.startsWith("PA")) {
+            Optional<Participants> participantOpt = participantsRepository.findByToken(token);
+            if (participantOpt.isPresent()) {
+                Participants participant = participantOpt.get();
+
+                Optional<Project> projectOpt = projectRepository.findById(participant.getProjetcId());
+
+                Map<String, Object> data = new HashMap<>();
+                data.put("participant", participant);
+
+                if (projectOpt.isPresent()) {
+                    Project project = projectOpt.get();
+
+                    // Fetch category name
+                    Optional<Category> categoryOpt = categoryRepository.findById(project.getCategoryId());
+
+                    Map<String, Object> projectData = new HashMap<>();
+                    projectData.put("projectId", project.getProjectId());
+                    projectData.put("projectName", project.getProjectName());
+                    projectData.put("projectStatus", project.getProjectStatus());
+                    projectData.put("ngoId", project.getNgoId());
+                    projectData.put("categoryId", project.getCategoryId());
+                    projectData.put("projectMainImage", project.getProjectMainImage());
+                    projectData.put("projectBudget", project.getProjectBudget());
+                    projectData.put("projectLocation", project.getProjectLocation());
+                    projectData.put("impactpeople", project.getImpactpeople());
+                    projectData.put("projectShortDescription", project.getProjectShortDescription());
+                    projectData.put("projectDEpartmentName", project.getProjectDEpartmentName());
+                    projectData.put("projectImages", project.getProjectImages());
+                    projectData.put("projectDescription", project.getProjectDescription());
+
+                    if (categoryOpt.isPresent()) {
+                        projectData.put("categoryName", categoryOpt.get().getCategoryName());
+                    } else {
+                        projectData.put("categoryName", "Category not found");
+                    }
+
+                    data.put("project", projectData);
+                } else {
+                    data.put("project", "Project not found");
+                }
+
+                response.put("status", 200);
+                response.put("message", "Participant found");
+                response.put("data", data);
+            } else {
+                response.put("status", 404);
+                response.put("message", "Participant not found");
+            }
+
+        } else if (token.startsWith("FA")) {
+            Optional<FundAnIdea> fundAnIdea = fundAnIdeaRepository.findByFundanideatoken(token);
+            if (fundAnIdea.isPresent()) {
+                response.put("status", 200);
+                response.put("message", "FundAnIdea found");
+                response.put("data", fundAnIdea.get());
+            } else {
+                response.put("status", 404);
+                response.put("message", "FundAnIdea not found");
+            }
+
+        } else {
+            response.put("status", 400);
+            response.put("message", "Invalid token prefix");
+        }
+
+        return ResponseEntity.status((int) response.get("status")).body(response);
+    }
+
 }
