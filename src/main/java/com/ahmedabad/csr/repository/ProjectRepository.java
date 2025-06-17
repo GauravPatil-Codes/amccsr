@@ -30,4 +30,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
             @Param("status") String status,
             Pageable pageable);
 
+    Page<Project> findBycompanieId(int companieId, Pageable pageable);
+
 }
