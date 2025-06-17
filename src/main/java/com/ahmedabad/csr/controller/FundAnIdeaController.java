@@ -35,15 +35,10 @@ public class FundAnIdeaController {
     private FundAnIdeaRepository fundAnIdeaRepository;
 
     @PostMapping("/addFundanidea")
-    // public ResponseEntity<ApiResponse<FundAnIdea>> addFundAnIdea(@RequestBody FundAnIdea fundAnIdea) {
-    //     FundAnIdea savedFundAnIdea = fundAnIdeaService.saveFundAnIdea(fundAnIdea);
-    //     return ResponseEntity.ok(new ApiResponse<>(200, "Fund An Idea added successfully", savedFundAnIdea));
-    // }
-// @PostMapping("/addFundanidea")
-public ResponseEntity<ApiResponse<FundAnIdea>> addFundAnIdea(@RequestBody FundAnIdea fundAnIdea) {
-    FundAnIdea savedFundAnIdea = fundAnIdeaService.saveFundAnIdea(fundAnIdea);
-    return ResponseEntity.ok(new ApiResponse<>(200, "Fund An Idea added successfully", savedFundAnIdea));
-}
+    public ResponseEntity<ApiResponse<FundAnIdea>> addFundAnIdea(@RequestBody FundAnIdea fundAnIdea) {
+        FundAnIdea savedFundAnIdea = fundAnIdeaService.saveFundAnIdea(fundAnIdea);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Fund An Idea added successfully", savedFundAnIdea));
+    }
 
     @GetMapping("/listallFundanidea")
     public ResponseEntity<ApiResponse<Page<FundAnIdea>>> listAllFundAnIdea(
