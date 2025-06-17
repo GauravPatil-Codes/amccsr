@@ -314,4 +314,33 @@ public ResponseEntity<Map<String, Object>> filterProjects(
     }
 }
 
+
+
+
+ // projectby category id
+  @GetMapping("/projectshowbycompanieId/{companieId}")
+  public ResponseEntity<Map<String, Object>> getprojetcByCompanyId(
+      @PathVariable int companieId,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Project> projectPage = projectRepository.findBycompanieId(companieId, pageable);
+
+    Map<String, Object> response = new HashMap<>();
+    if (projectPage.hasContent()) {
+      response.put("status", 200);
+      response.put("message", "Projects found by companie ID successfully");
+      response.put("data", projectPage.getContent());
+      response.put("currentPage", projectPage.getNumber());
+      response.put("totalItems", projectPage.getTotalElements());
+      response.put("totalPages", projectPage.getTotalPages());
+      return ResponseEntity.ok(response);
+    } else {
+      response.put("status", 404);
+      response.put("message", "No projects found for this category ID");
+      return ResponseEntity.status(404).body(response);
+    }
+  }
+
 }

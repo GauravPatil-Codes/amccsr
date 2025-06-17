@@ -75,6 +75,11 @@ public class ProjectServicesImpl implements ProjectServices {
     return projectRepository.findByProjectBudget(projectBudget, pageable);
 }
 
+
+    @Override
+    public Page<Project> getprojetcByCompanyId(int companieId, Pageable pageable) {
+        return projectRepository.findBycompanieId(companieId, pageable);
+    }
 @Override
    public Page<Project> getProjectByProjectStatus(String projectStatus, Pageable pageable) {
     return projectRepository.findByProjectStatus(projectStatus, pageable);

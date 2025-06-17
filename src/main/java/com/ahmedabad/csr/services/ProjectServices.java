@@ -26,4 +26,6 @@ public interface ProjectServices {
     Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable);
 
     Page<Project> getProjectByProjectStatus(String projectStatus, Pageable pageable);
+
+    Page<Project> getprojetcByCompanyId(int companieId, Pageable pageable);
 }
