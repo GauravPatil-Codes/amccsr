@@ -19,6 +19,7 @@ public class SuccessStory {
     private int categoryId;
     private int ngoId;
     private String successstoryDate;
+    
     public int getSuccessstoryId() {
         return successstoryId;
     }
