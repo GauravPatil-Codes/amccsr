@@ -1,7 +1,7 @@
 package com.ahmedabad.csr.controller;
 
 import java.util.HashMap;
-
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -84,17 +84,7 @@ public class ProjectController {
     }
   }
 
-  // @GetMapping("/listallProjects")
-  // public ResponseEntity<ApiResponse<Page<Project>>> listNGOs(
-  // @RequestParam(defaultValue = "0") int page,
-  // @RequestParam(defaultValue = "5") int size) {
-  // Pageable pageable = PageRequest.of(page, size,
-  // Sort.by("projetcId").descending());
-  // Page<Project> project = projectRepository.findAll(pageable);
-
-  // return ResponseEntity.ok(new ApiResponse<>(200, "projects fetched
-  // successfully", project));
-  // }
+ 
   @GetMapping("/listallProjects")
   public ResponseEntity<ApiResponse<Page<Map<String, Object>>>> listNGOs(
       @RequestParam(defaultValue = "0") int page,
@@ -253,5 +243,75 @@ public class ProjectController {
       return ResponseEntity.status(404).body(response);
     }
   }
+
+
+  @GetMapping("/projects/filter")
+public ResponseEntity<Map<String, Object>> filterProjects(
+        @RequestParam(required = false) Integer ngoId,
+        @RequestParam(required = false) Integer categoryId,
+        @RequestParam(required = false) String projectBudget,
+        @RequestParam(required = false) String status,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Project> projectPage = projectRepository.filterProjects(ngoId, categoryId, projectBudget, status, pageable);
+
+    List<Map<String, Object>> projectList = projectPage.getContent().stream().map(project -> {
+        Map<String, Object> map = new HashMap<>();
+        map.put("projectId", project.getProjectId());
+        map.put("projectName", project.getProjectName());
+        map.put("projectDescription", project.getProjectDescription());
+        map.put("projectStatus", project.getProjectStatus());
+        map.put("projectBudget", project.getProjectBudget());
+        map.put("projectLocation", project.getProjectLocation());
+        map.put("projectShortDescription", project.getProjectShortDescription());
+        map.put("projectMainImage", project.getProjectMainImage());
+        map.put("projectDEpartmentName", project.getProjectDEpartmentName());
+        map.put("ngoId", project.getNgoId());
+        map.put("categoryId", project.getCategoryId());
+        map.put("projectImages", project.getProjectImages());
+
+        // Fetch Category name
+        Optional<Category> categoryOpt = categoryRepository.findById(project.getCategoryId());
+        map.put("categoryName", categoryOpt.map(Category::getCategoryName).orElse("Category not found"));
+
+        // Fetch NGO info
+        Optional<NGO> ngoOpt = ngoRepository.findById(project.getNgoId());
+        if (ngoOpt.isPresent()) {
+            NGO ngo = ngoOpt.get();
+            Map<String, Object> ngoMap = new HashMap<>();
+            ngoMap.put("id", ngo.getId());
+            ngoMap.put("ngoname", ngo.getOrganizationName());
+            ngoMap.put("ngoemailid", ngo.getEmailId());
+            ngoMap.put("ngousername", ngo.getUserName());
+            ngoMap.put("ngoPassword", ngo.getPassword());
+            ngoMap.put("ageoforganization", ngo.getAgeOfOrganization());
+            ngoMap.put("annualturnover", ngo.getAnnualTurnover());
+            ngoMap.put("nameofcontactprson", ngo.getNameOfContactPerson());
+            ngoMap.put("numberofcontactprson", ngo.getContactNumber());
+            map.put("ngoInfo", ngoMap);
+        } else {
+            map.put("ngoInfo", "NGO not found");
+        }
+
+        return map;
+    }).toList();
+
+    Map<String, Object> response = new HashMap<>();
+    if (!projectList.isEmpty()) {
+        response.put("status", 200);
+        response.put("message", "Projects found successfully");
+        response.put("data", projectList);
+        response.put("currentPage", projectPage.getNumber());
+        response.put("totalItems", projectPage.getTotalElements());
+        response.put("totalPages", projectPage.getTotalPages());
+        return ResponseEntity.ok(response);
+    } else {
+        response.put("status", 404);
+        response.put("message", "No projects found for the provided filters");
+        return ResponseEntity.status(404).body(response);
+    }
+}
 
 }
