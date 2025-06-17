@@ -21,6 +21,7 @@ public class Project {
     private String projectStatus;
     private int ngoId;
     private int categoryId;
+    private int companieId;
     private String projectMainImage;
     private String projectBudget;
     private String projectLocation;
@@ -44,7 +45,7 @@ public class Project {
                 + categoryId + ", projectMainImage=" + projectMainImage + ", projectBudget=" + projectBudget
                 + ", projectLocation=" + projectLocation + ", impactpeople=" + impactpeople
                 + ", projectShortDescription=" + projectShortDescription + ", projectDEpartmentName="
-                + projectDEpartmentName + ", projectImages=" + projectImages + "]";
+                + projectDEpartmentName + ", projectImages=" + projectImages + ",companieId="+companieId+"]";
     }
 
     public int getProjectId() {
@@ -58,7 +59,7 @@ public class Project {
     public Project(int projetcId, String projetcName, String projetcDescription, String projectStatus, int ngoId,
             int categoryId, String projectMainImage, String projectBudget, String projectLocation,
             String impactpeople, String projectShortDescription, String projectDEpartmentName,
-            List<String> projectImages) {
+            List<String> projectImages,int companieId) {
         this.projetcId = projetcId;
         this.projetcName = projetcName;
         this.projetcDescription = projetcDescription;
@@ -72,6 +73,7 @@ public class Project {
         this.projectShortDescription = projectShortDescription;
         this.projectDEpartmentName = projectDEpartmentName;
         this.projectImages = projectImages;
+        this.companieId=companieId;
     }
 
     public String getProjectName() {
@@ -170,4 +172,10 @@ public class Project {
         this.projectImages = projectImages;
     }
 
+    public int getcompanieId(){
+        return companieId;
+    }
+    public void setcompanieId(int companieId){
+        this.companieId = companieId;
+    }
 }
