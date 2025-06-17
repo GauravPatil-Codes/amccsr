@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.ahmedabad.csr.entities.Project;
+    
 import com.ahmedabad.csr.entities.SuccessStory;
 import com.ahmedabad.csr.repository.SuccessStoryRepository;
 

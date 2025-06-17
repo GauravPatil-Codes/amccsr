@@ -20,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ahmedabad.csr.entities.Category;
-import com.ahmedabad.csr.entities.LatestUpdate;
-import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.entities.SuccessStory;
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.repository.SuccessStoryRepository;
