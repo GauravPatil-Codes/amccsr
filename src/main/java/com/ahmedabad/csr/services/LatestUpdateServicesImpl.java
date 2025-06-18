@@ -3,8 +3,11 @@ package com.ahmedabad.csr.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ahmedabad.csr.entities.Companies;
 import com.ahmedabad.csr.entities.LatestUpdate;
 import com.ahmedabad.csr.repository.LatestUpdateRepository;
 
@@ -38,14 +41,16 @@ public class LatestUpdateServicesImpl implements LatestUpdateServices {
     @Override
     public LatestUpdate updateletestUpdate(int letestupdateid, LatestUpdate updatedLatestUpdate) {
         LatestUpdate existingLatestUpdate = getLatestupdateById(letestupdateid);
-        if (updatedLatestUpdate.getLatestupdatetitle() != null) {
-            existingLatestUpdate.setLatestupdatetitle(updatedLatestUpdate.getLatestupdatetitle());
+        if (updatedLatestUpdate.getLetestupdatetitle() != null) {
+            existingLatestUpdate.setLetestupdatetitle(updatedLatestUpdate.getLetestupdatetitle());
         }
-        if (updatedLatestUpdate.getLatestupdatedesc() != null) {
-            existingLatestUpdate.setLatestupdatedesc(updatedLatestUpdate.getLatestupdatedesc());
+        if (updatedLatestUpdate.getLetestupdatedesc() != null) {
+            existingLatestUpdate.setLetestupdatedesc(updatedLatestUpdate.getLetestupdatedesc());
         }
-        if (updatedLatestUpdate.getLatestupdateimage() != null) {
-            existingLatestUpdate.setLatestupdateimage(updatedLatestUpdate.getLatestupdateimage());
+        if (updatedLatestUpdate.getLetestupdateimage() != null) {
+            existingLatestUpdate.setLetestupdateimage(updatedLatestUpdate.getLetestupdateimage());
+        }if(updatedLatestUpdate.getStatus()!=null){
+            existingLatestUpdate.setStatus(updatedLatestUpdate.getStatus());
         }
 
         return letestupdateRepository.save(existingLatestUpdate);
@@ -59,4 +64,10 @@ public class LatestUpdateServicesImpl implements LatestUpdateServices {
         letestupdateRepository.delete(letestUpdate);
     }
 
+
+      @Override
+    public Page<LatestUpdate> getLatestupdateBystatus(String status,Pageable pageable) {
+        return letestupdateRepository.findBystatus(status,pageable);
+    }
+    
 }

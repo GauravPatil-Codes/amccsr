@@ -9,53 +9,58 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "letestupdate")
 public class LatestUpdate {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int letestupdateid;
     private String letestupdatetitle;
     private String letestupdatedesc;
     private String letestupdateimage;
-  
-    public int getLatestupdateid() {
+    private String status;
+    public int getLetestupdateid() {
         return letestupdateid;
     }
-    public void setLatestupdateid(int letestupdateid) {
+    public void setLetestupdateid(int letestupdateid) {
         this.letestupdateid = letestupdateid;
     }
-    public String getLatestupdatetitle() {
+    public String getLetestupdatetitle() {
         return letestupdatetitle;
     }
-    public void setLatestupdatetitle(String letestupdatetitle) {
+    public void setLetestupdatetitle(String letestupdatetitle) {
         this.letestupdatetitle = letestupdatetitle;
     }
-    public String getLatestupdatedesc() {
+    public String getLetestupdatedesc() {
         return letestupdatedesc;
     }
-    public void setLatestupdatedesc(String letestupdatedesc) {
+    public void setLetestupdatedesc(String letestupdatedesc) {
         this.letestupdatedesc = letestupdatedesc;
     }
-    public String getLatestupdateimage() {
+    public String getLetestupdateimage() {
         return letestupdateimage;
     }
-
-       public LatestUpdate() {
-       
+    public void setLetestupdateimage(String letestupdateimage) {
+        this.letestupdateimage = letestupdateimage;
     }
-
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+     public LatestUpdate(){}
+    public LatestUpdate(int letestupdateid, String letestupdatetitle, String letestupdatedesc, String letestupdateimage,
+            String status) {
+        this.letestupdateid = letestupdateid;
+        this.letestupdatetitle = letestupdatetitle;
+        this.letestupdatedesc = letestupdatedesc;
+        this.letestupdateimage = letestupdateimage;
+        this.status = status;
+    }
     @Override
     public String toString() {
         return "LatestUpdate [letestupdateid=" + letestupdateid + ", letestupdatetitle=" + letestupdatetitle
-                + ", letestupdatedesc=" + letestupdatedesc + ", letestupdateimage=" + letestupdateimage + "]";
+                + ", letestupdatedesc=" + letestupdatedesc + ", letestupdateimage=" + letestupdateimage + ", status="
+                + status + "]";
     }
-    public LatestUpdate(int letestupdateid, String letestupdatetitle, String letestupdatedesc,
-            String letestupdateimage) {
-        this.letestupdateid = letestupdateid;
-        this.letestupdatetitle = letestupdatetitle;
-        this.letestupdatedesc = letestupdatedesc;
-        this.letestupdateimage = letestupdateimage;
-    }
-    public void setLatestupdateimage(String letestupdateimage) {
-        this.letestupdateimage = letestupdateimage;
-    }
+    
 }

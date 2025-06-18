@@ -68,6 +68,40 @@ public class LatestUpdateController {
         }
     }
 
+    //   @GetMapping("/letestupdateshowbystatus/{status}")
+    // public ResponseEntity<ApiResponse<?>> getLatestupdateBystatus(@PathVariable String status) {
+    //     Optional<LatestUpdate> letestUpdate = letestupdateRepository.findBystatus(status);
+
+    //     if (letestUpdate.isPresent()) {
+    //         ApiResponse<LatestUpdate> response = new ApiResponse<>(200, "letest Update fetched successfully",
+    //                 letestUpdate.get());
+    //         return new ResponseEntity<>(response, HttpStatus.OK);
+    //     } else {
+    //         ApiResponse<String> response = new ApiResponse<>(404, "letest Update not found", null);
+    //         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    //     }
+    // }
+@GetMapping("/latestupdateshowbystatus/{status}")
+public ResponseEntity<ApiResponse<Page<LatestUpdate>>> getLatestUpdatesByStatus(
+        @PathVariable String status,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    try {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<LatestUpdate> updatesPage = letestupdateRepository.findByStatus(status, pageable);
+
+        if (updatesPage.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(404, "No latest updates found for status: " + status, null));
+        }
+
+        return ResponseEntity.ok(new ApiResponse<>(200, "Latest updates fetched successfully", updatesPage));
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(500, "Error fetching updates: " + e.getMessage(), null));
+    }
+}
+
     @PutMapping("/updateletestupdates/{letestupdateid}")
     public ResponseEntity<ApiResponse<LatestUpdate>> updateLatestUpdate(
             @PathVariable int letestupdateid,
