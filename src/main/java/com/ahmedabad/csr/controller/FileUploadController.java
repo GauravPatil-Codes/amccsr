@@ -1,8 +1,15 @@
 package com.ahmedabad.csr.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.ahmedabad.csr.entities.Companies;
+import com.ahmedabad.csr.entities.Gallery;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.*;
@@ -87,4 +94,8 @@ public class FileUploadController {
         }
         return null;
     }
+
+
+
+   
 }

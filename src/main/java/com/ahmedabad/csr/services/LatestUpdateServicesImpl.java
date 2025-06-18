@@ -3,8 +3,11 @@ package com.ahmedabad.csr.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ahmedabad.csr.entities.Companies;
 import com.ahmedabad.csr.entities.LatestUpdate;
 import com.ahmedabad.csr.repository.LatestUpdateRepository;
 
@@ -63,7 +66,8 @@ public class LatestUpdateServicesImpl implements LatestUpdateServices {
 
 
       @Override
-    public LatestUpdate getLatestupdateBystatus(String status) {
-        return letestupdateRepository.findBystatus(status).orElse(null);
+    public Page<LatestUpdate> getLatestupdateBystatus(String status,Pageable pageable) {
+        return letestupdateRepository.findBystatus(status,pageable);
     }
+    
 }
