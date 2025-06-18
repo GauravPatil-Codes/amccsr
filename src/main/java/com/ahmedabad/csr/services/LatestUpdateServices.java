@@ -14,4 +14,6 @@ public interface LatestUpdateServices {
     LatestUpdate updateletestUpdate(int letestupdateid, LatestUpdate updatedletestUpdates);
 
     void deleteLatestUpdateById(int letestupdateid);
+
+    LatestUpdate getLatestupdateBystatus(String status);
 }

@@ -68,6 +68,20 @@ public class LatestUpdateController {
         }
     }
 
+      @GetMapping("/letestupdateshowbystatus/{status}")
+    public ResponseEntity<ApiResponse<?>> getLatestupdateBystatus(@PathVariable String status) {
+        Optional<LatestUpdate> letestUpdate = letestupdateRepository.findBystatus(status);
+
+        if (letestUpdate.isPresent()) {
+            ApiResponse<LatestUpdate> response = new ApiResponse<>(200, "letest Update fetched successfully",
+                    letestUpdate.get());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            ApiResponse<String> response = new ApiResponse<>(404, "letest Update not found", null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/updateletestupdates/{letestupdateid}")
     public ResponseEntity<ApiResponse<LatestUpdate>> updateLatestUpdate(
             @PathVariable int letestupdateid,
