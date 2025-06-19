@@ -45,6 +45,16 @@
             <scope>test</scope>
         </dependency>
      
+     <dependency>
+    <groupId>commons-net</groupId>
+    <artifactId>commons-net</artifactId>
+    <version>3.9.0</version> <!-- or latest -->
+</dependency>
+<dependency>
+    <groupId>net.coobird</groupId>
+    <artifactId>thumbnailator</artifactId>
+    <version>0.4.20</version> <!-- Latest as of now -->
+</dependency>
     </dependencies>
 
     <build>
