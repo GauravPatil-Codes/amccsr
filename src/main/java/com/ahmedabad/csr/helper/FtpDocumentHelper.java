@@ -9,10 +9,11 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 
 @Component
-public class FtpHelper {
+public class FtpDocumentHelper {
+
     private static final String FTP_SERVER = "89.117.188.211";
-    private static final String FTP_USERNAME = "u703629182.srsimages";
-    private static final String FTP_PASSWORD = "z+jN&Sgo4;Hr8hI*";
+    private static final String FTP_USERNAME = "u703629182.srsdocuments";
+    private static final String FTP_PASSWORD = "1XWt:N?UB#RYBi>i";
     private static final int port = 21;
 
     public String uploadFile(InputStream inputStream, String remoteFileName) {
@@ -36,7 +37,7 @@ public class FtpHelper {
 
             if (done) {
 
-                return "https://lakhpatididi.in/SRS-documents/images" + remotefilepath;
+                return "https://lakhpatididi.in/SRS-documents/documents" + remotefilepath;
             } else {
 
                 int replayCode = ftp.getReplyCode();

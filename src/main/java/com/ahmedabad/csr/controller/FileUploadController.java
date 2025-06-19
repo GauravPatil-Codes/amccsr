@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ahmedabad.csr.helper.FtpDocumentHelper;
 import com.ahmedabad.csr.helper.FtpHelper;
 import com.ahmedabad.csr.helper.FtpVideoHelper;
 import com.ahmedabad.csr.models.UploadResponse;
@@ -17,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/files")
+// @RequestMapping("/api/files")
 public class FileUploadController {
 
     @Autowired
@@ -27,6 +28,8 @@ public class FileUploadController {
     private FtpHelper ftpHelper;
     @Autowired
     private FtpVideoHelper ftpVideoHelper;
+    @Autowired
+    private FtpDocumentHelper ftpDocumentHelper;
 
     @PostMapping("/upload/images")
     public ResponseEntity<UploadResponse> uploadImages(@RequestParam("files") MultipartFile[] files) {
@@ -65,7 +68,7 @@ public class FileUploadController {
     }
 
 
-    // uplod video
+    // uplaod video
      @PostMapping("/upload/videos")
     public ResponseEntity<UploadResponse> uploadVideos(@RequestParam("files") MultipartFile[] files) {
         if (files == null || files.length == 0) {
@@ -99,4 +102,41 @@ public class FileUploadController {
 
         return ResponseEntity.ok(new UploadResponse(200, "Videos uploaded successfully", uploadedUrls));
     }
+
+    // upload documents
+      @PostMapping("/upload/documents")
+    public ResponseEntity<UploadResponse> uploadDocuments(@RequestParam("files") MultipartFile[] files) {
+        if (files == null || files.length == 0) {
+            return ResponseEntity.badRequest().body(new UploadResponse(400, "At least one document  is required.", Collections.emptyList()));
+        }
+
+        if (files.length > 5) {
+            return ResponseEntity.badRequest().body(new UploadResponse(400, "Maximum 5 video files allowed.", Collections.emptyList()));
+        }
+
+        List<String> uploadedUrls = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            try (InputStream inputStream = file.getInputStream()) {
+                String originalFileName = file.getOriginalFilename();
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+                String remoteFileName = originalFileName + "_" + timestamp;
+
+                String fileUrl = ftpDocumentHelper.uploadFile(inputStream, remoteFileName);
+
+                if (fileUrl != null) {
+                    uploadedUrls.add(fileUrl);
+                } else {
+                    return ResponseEntity.status(500).body(new UploadResponse(500, "Upload failed for: " + originalFileName, uploadedUrls));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(500).body(new UploadResponse(500, "Error: " + e.getMessage(), uploadedUrls));
+            }
+        }
+
+        return ResponseEntity.ok(new UploadResponse(200, "document uploaded successfully", uploadedUrls));
+    }
+
+    
 }
