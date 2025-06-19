@@ -1,101 +1,63 @@
 package com.ahmedabad.csr.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ahmedabad.csr.entities.Companies;
-import com.ahmedabad.csr.entities.Gallery;
+import com.ahmedabad.csr.helper.FtpHelper;
+import com.ahmedabad.csr.models.UploadResponse;
+import com.ahmedabad.csr.services.CompressionService;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.file.*;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/files")
 public class FileUploadController {
 
-   
-    private static final String SERVER_STORAGE_PATH = "/files/public_html/SRS-documents";
-    private static final String PUBLIC_BASE_URL = "https://lakhpatididi.in/SRS-documents";
+    @Autowired
+    private CompressionService compressionService;
 
-  
-    private static final Set<String> IMAGE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "gif", "webp");
-    private static final Set<String> VIDEO_EXTENSIONS = Set.of("mp4", "mov", "avi", "mkv", "webm");
-    private static final Set<String> DOCUMENT_EXTENSIONS = Set.of("pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt");
+    @Autowired
+    private FtpHelper ftpHelper;
 
-    @PostMapping("/upload")
-    public ResponseEntity<Map<String, Object>> uploadFiles(@RequestParam("files") MultipartFile[] files) {
-        Map<String, Object> response = new HashMap<>();
-        List<String> fileUrls = new ArrayList<>();
+    @PostMapping("/upload/image")
+    public ResponseEntity<UploadResponse> uploadImages(@RequestParam("files") MultipartFile[] files) {
+        if (files == null || files.length == 0) {
+            return ResponseEntity.badRequest().body(new UploadResponse(400, "At least one file is required.", Collections.emptyList()));
+        }
 
-        try {
-            for (MultipartFile file : files) {
-                if (file.isEmpty()) continue;
+        if (files.length > 5) {
+            return ResponseEntity.badRequest().body(new UploadResponse(400, "Maximum 5 files allowed.", Collections.emptyList()));
+        }
 
-                String originalName = file.getOriginalFilename();
-                String fileExtension = getFileExtension(originalName).toLowerCase();
-                String subfolder = determineSubfolder(fileExtension);
-                
-                if (subfolder == null) {
-                    continue;
+        List<String> uploadedUrls = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            try (InputStream inputStream = file.getInputStream()) {
+                InputStream compressedInputStream = compressionService.compressImage(inputStream, 1200, 1200, 1.0f);
+
+                String originalFileName = file.getOriginalFilename();
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+                String remoteFileName = originalFileName + "_" + timestamp;
+
+                String fileUrl = ftpHelper.uploadFile(compressedInputStream, remoteFileName);
+
+                if (fileUrl != null) {
+                    uploadedUrls.add(fileUrl);
+                } else {
+                    return ResponseEntity.status(500).body(new UploadResponse(500, "File upload failed for: " + originalFileName, uploadedUrls));
                 }
-
-               
-                Path targetDir = Paths.get(SERVER_STORAGE_PATH, subfolder);
-                Files.createDirectories(targetDir);
-
-                String safeName = originalName.replaceAll("[^a-zA-Z0-9.-]", "_");
-                Path targetPath = targetDir.resolve(safeName);
-                
-                
-                file.transferTo(targetPath);
-                
-              
-                String encodedName = URLEncoder.encode(originalName, "UTF-8")
-                                             .replace("+", "%20");
-                fileUrls.add(PUBLIC_BASE_URL + "/" + subfolder + "/" + encodedName);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(500).body(new UploadResponse(500, "Error: " + e.getMessage(), uploadedUrls));
             }
-
-            if (fileUrls.isEmpty()) {
-                response.put("status", 400);
-                response.put("message", "No valid files were uploaded");
-            } else {
-                response.put("status", 200);
-                response.put("message", "Files uploaded successfully");
-                response.put("fileurl", fileUrls);
-            }
-
-        } catch (Exception e) {
-            response.put("status", 500);
-            response.put("message", "Upload failed: " + e.getMessage());
-            e.printStackTrace();
         }
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new UploadResponse(200, "Files uploaded successfully", uploadedUrls));
     }
-
-    private String getFileExtension(String filename) {
-        int dotIndex = filename.lastIndexOf('.');
-        return (dotIndex == -1) ? "" : filename.substring(dotIndex + 1);
-    }
-
-    private String determineSubfolder(String fileExtension) {
-        if (IMAGE_EXTENSIONS.contains(fileExtension)) {
-            return "images";
-        } else if (VIDEO_EXTENSIONS.contains(fileExtension)) {
-            return "videos";
-        } else if (DOCUMENT_EXTENSIONS.contains(fileExtension)) {
-            return "documents";
-        }
-        return null;
-    }
-
-
-
-   
 }
