@@ -38,6 +38,8 @@ public class ParticipantsServiceImpl implements ParticipantsService {
             existing.setParticipantEmail(participant.getParticipantEmail());
             existing.setParticipantMobileNumber(participant.getParticipantMobileNumber());
             existing.setAmount(participant.getAmount());
+            existing.setStatus(participant.getStatus());
+            existing.setNote(participant.getNote());
             return participantsRepository.save(existing);
         }).orElse(null);
     }
