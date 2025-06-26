@@ -34,11 +34,13 @@ public class FileUploadController {
     @PostMapping("/upload/images")
     public ResponseEntity<UploadResponse> uploadImages(@RequestParam("files") MultipartFile[] files) {
         if (files == null || files.length == 0) {
-            return ResponseEntity.badRequest().body(new UploadResponse(400, "At least one file is required.", Collections.emptyList()));
+            return ResponseEntity.badRequest()
+                    .body(new UploadResponse(400, "At least one file is required.", Collections.emptyList()));
         }
 
         if (files.length > 5) {
-            return ResponseEntity.badRequest().body(new UploadResponse(400, "Maximum 5 files allowed.", Collections.emptyList()));
+            return ResponseEntity.badRequest()
+                    .body(new UploadResponse(400, "Maximum 5 files allowed.", Collections.emptyList()));
         }
 
         List<String> uploadedUrls = new ArrayList<>();
@@ -56,27 +58,30 @@ public class FileUploadController {
                 if (fileUrl != null) {
                     uploadedUrls.add(fileUrl);
                 } else {
-                    return ResponseEntity.status(500).body(new UploadResponse(500, "File upload failed for: " + originalFileName, uploadedUrls));
+                    return ResponseEntity.status(500)
+                            .body(new UploadResponse(500, "File upload failed for: " + originalFileName, uploadedUrls));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                return ResponseEntity.status(500).body(new UploadResponse(500, "Error: " + e.getMessage(), uploadedUrls));
+                return ResponseEntity.status(500)
+                        .body(new UploadResponse(500, "Error: " + e.getMessage(), uploadedUrls));
             }
         }
 
         return ResponseEntity.ok(new UploadResponse(200, "Files uploaded successfully", uploadedUrls));
     }
 
-
     // uplaod video
-     @PostMapping("/upload/videos")
+    @PostMapping("/upload/videos")
     public ResponseEntity<UploadResponse> uploadVideos(@RequestParam("files") MultipartFile[] files) {
         if (files == null || files.length == 0) {
-            return ResponseEntity.badRequest().body(new UploadResponse(400, "At least one video file is required.", Collections.emptyList()));
+            return ResponseEntity.badRequest()
+                    .body(new UploadResponse(400, "At least one video file is required.", Collections.emptyList()));
         }
 
         if (files.length > 5) {
-            return ResponseEntity.badRequest().body(new UploadResponse(400, "Maximum 5 video files allowed.", Collections.emptyList()));
+            return ResponseEntity.badRequest()
+                    .body(new UploadResponse(400, "Maximum 5 video files allowed.", Collections.emptyList()));
         }
 
         List<String> uploadedUrls = new ArrayList<>();
@@ -85,18 +90,25 @@ public class FileUploadController {
             try (InputStream inputStream = file.getInputStream()) {
                 String originalFileName = file.getOriginalFilename();
                 String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-                String remoteFileName = originalFileName + "_" + timestamp;
+               
+                String filebaseName = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
+                String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+
+                filebaseName = filebaseName.replaceAll("[^a-zA-Z0-9\\-_]", "_");
+                 String remoteFileName = filebaseName + "_" + timestamp + extension;
 
                 String fileUrl = ftpVideoHelper.uploadFile(inputStream, remoteFileName);
 
                 if (fileUrl != null) {
                     uploadedUrls.add(fileUrl);
                 } else {
-                    return ResponseEntity.status(500).body(new UploadResponse(500, "Upload failed for: " + originalFileName, uploadedUrls));
+                    return ResponseEntity.status(500)
+                            .body(new UploadResponse(500, "Upload failed for: " + originalFileName, uploadedUrls));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResponseEntity.status(500).body(new UploadResponse(500, "Error: " + e.getMessage(), uploadedUrls));
+                return ResponseEntity.status(500)
+                        .body(new UploadResponse(500, "Error: " + e.getMessage(), uploadedUrls));
             }
         }
 
@@ -104,14 +116,16 @@ public class FileUploadController {
     }
 
     // upload documents
-      @PostMapping("/upload/documents")
+    @PostMapping("/upload/documents")
     public ResponseEntity<UploadResponse> uploadDocuments(@RequestParam("files") MultipartFile[] files) {
         if (files == null || files.length == 0) {
-            return ResponseEntity.badRequest().body(new UploadResponse(400, "At least one document  is required.", Collections.emptyList()));
+            return ResponseEntity.badRequest()
+                    .body(new UploadResponse(400, "At least one document  is required.", Collections.emptyList()));
         }
 
         if (files.length > 5) {
-            return ResponseEntity.badRequest().body(new UploadResponse(400, "Maximum 5 video files allowed.", Collections.emptyList()));
+            return ResponseEntity.badRequest()
+                    .body(new UploadResponse(400, "Maximum 5 video files allowed.", Collections.emptyList()));
         }
 
         List<String> uploadedUrls = new ArrayList<>();
@@ -120,23 +134,28 @@ public class FileUploadController {
             try (InputStream inputStream = file.getInputStream()) {
                 String originalFileName = file.getOriginalFilename();
                 String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-                String remoteFileName = originalFileName + "_" + timestamp;
 
+                String baseName = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
+                String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+
+                baseName = baseName.replaceAll("[^a-zA-Z0-9\\-_]", "_");
+                String remoteFileName = baseName + "_" + timestamp + extension;
                 String fileUrl = ftpDocumentHelper.uploadFile(inputStream, remoteFileName);
 
                 if (fileUrl != null) {
                     uploadedUrls.add(fileUrl);
                 } else {
-                    return ResponseEntity.status(500).body(new UploadResponse(500, "Upload failed for: " + originalFileName, uploadedUrls));
+                    return ResponseEntity.status(500)
+                            .body(new UploadResponse(500, "Upload failed for: " + originalFileName, uploadedUrls));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResponseEntity.status(500).body(new UploadResponse(500, "Error: " + e.getMessage(), uploadedUrls));
+                return ResponseEntity.status(500)
+                        .body(new UploadResponse(500, "Error: " + e.getMessage(), uploadedUrls));
             }
         }
 
         return ResponseEntity.ok(new UploadResponse(200, "document uploaded successfully", uploadedUrls));
     }
 
-    
 }

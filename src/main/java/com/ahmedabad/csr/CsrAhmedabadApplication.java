@@ -26,7 +26,9 @@ public class CsrAhmedabadApplication {
 			                    "https://127.0.0.1:5501",
 			                    "http://localhost:8085",
 			                    "http://127.0.0.1:5500",
-			                    "https://127.0.0.1:5500"
+			                    "https://127.0.0.1:5500",
+								"https://lakhpatididi.in",
+								"https://lakhpatididi.in/"
 			                   
 
 						).allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH").allowedHeaders("*")
