@@ -16,7 +16,9 @@ import com.ahmedabad.csr.entities.Participants;
 import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.repository.ParticipantsRepository;
+import com.ahmedabad.csr.repository.ProjectRepository;
 import com.ahmedabad.csr.services.ParticipantsService;
+import com.ahmedabad.csr.services.ProjectServices;
 
 @RestController
 
@@ -26,6 +28,8 @@ public class ParticipantsController {
     private ParticipantsService participantsService;
     @Autowired
     private ParticipantsRepository participantsRepository;
+    @Autowired
+    private ProjectServices ProjectServices;
 
     @PostMapping("/createParticipant")
     public ResponseEntity<Map<String, Object>> createParticipant(@RequestBody Participants participant) {
@@ -48,43 +52,46 @@ public class ParticipantsController {
     }
 
     // @GetMapping("/showbyParticipantId/{id}")
-    // public ResponseEntity<Map<String, Object>> getParticipantById(@PathVariable int id) {
-    //     Optional<Participants> participant = participantsService.getParticipantById(id);
-    //     Map<String, Object> response = new HashMap<>();
-    //     if (participant.isPresent()) {
-    //         response.put("status", 200);
-    //         response.put("data", participant.get());
-    //         return ResponseEntity.ok(response);
-    //     } else {
-    //         response.put("status", 404);
-    //         response.put("message", "Participant not found");
-    //         return ResponseEntity.status(404).body(response);
-    //     }
+    // public ResponseEntity<Map<String, Object>> getParticipantById(@PathVariable
+    // int id) {
+    // Optional<Participants> participant =
+    // participantsService.getParticipantById(id);
+    // Map<String, Object> response = new HashMap<>();
+    // if (participant.isPresent()) {
+    // response.put("status", 200);
+    // response.put("data", participant.get());
+    // return ResponseEntity.ok(response);
+    // } else {
+    // response.put("status", 404);
+    // response.put("message", "Participant not found");
+    // return ResponseEntity.status(404).body(response);
+    // }
     // }
 
     @GetMapping("/showbyParticipantId/{id}")
-public ResponseEntity<Map<String, Object>> getParticipantById(@PathVariable int id) {
-    Optional<Participants> participant = participantsService.getParticipantById(id);
-    Map<String, Object> response = new HashMap<>();
-    
-    
-    if (participant.isPresent()) {
-        Participants p = participant.get();
-        Optional<Participants> project = participantsService.getParticipantById(p.getProjetcId());
-        
-        Map<String, Object> data = new HashMap<>();
-        data.put("participant", p);
-        data.put("project", project.orElse(null));
-        
-        response.put("status", 200);
-        response.put("data", data);
-        return ResponseEntity.ok(response);
-    } else {
-        response.put("status", 404);
-        response.put("message", "Participant not found");
-        return ResponseEntity.status(404).body(response);
+    public ResponseEntity<Map<String, Object>> getParticipantById(@PathVariable int id) {
+        Optional<Participants> participant = participantsService.getParticipantById(id);
+        Map<String, Object> response = new HashMap<>();
+
+        if (participant.isPresent()) {
+            Participants p = participant.get();
+
+            // Fix: Use project service instead of participant service
+            Optional<Project> project = ProjectServices.getProjectById(p.getProjetcId());
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("participant", p);
+            data.put("project", project.orElse(null));
+
+            response.put("status", 200);
+            response.put("data", data);
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("status", 404);
+            response.put("message", "Participant not found");
+            return ResponseEntity.status(404).body(response);
+        }
     }
-}
 
     @PutMapping("/updateParticipant/{id}")
     public ResponseEntity<Map<String, Object>> updateParticipant(
