@@ -1,25 +1,23 @@
 package com.ahmedabad.csr.entities;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 @Entity
 @Table(name="successstory")
 public class SuccessStory {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int successstoryId;
     private String successstoryTitle;
+    @Column(name = "successstoryDescription", length = 5000)
     private String successstoryDescription;
     private String successstoryImage;
     private int categoryId;
     private int ngoId;
     private String successstoryDate;
-    
     public int getSuccessstoryId() {
         return successstoryId;
     }
@@ -62,9 +60,7 @@ public class SuccessStory {
     public void setSuccessstoryDate(String successstoryDate) {
         this.successstoryDate = successstoryDate;
     }
-    
     public SuccessStory(){}
-
     public SuccessStory(int successstoryId, String successstoryTitle, String successstoryDescription,
             String successstoryImage, int categoryId, int ngoId, String successstoryDate) {
         this.successstoryId = successstoryId;
@@ -81,5 +77,4 @@ public class SuccessStory {
                 + ", successstoryDescription=" + successstoryDescription + ", successstoryImage=" + successstoryImage
                 + ", categoryId=" + categoryId + ", ngoId=" + ngoId + ", successstoryDate=" + successstoryDate + "]";
     }
-    
 }
