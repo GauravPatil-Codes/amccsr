@@ -67,6 +67,7 @@ public ResponseEntity<Map<String, Object>> getParticipantById(@PathVariable int 
     Optional<Participants> participant = participantsService.getParticipantById(id);
     Map<String, Object> response = new HashMap<>();
     
+    
     if (participant.isPresent()) {
         Participants p = participant.get();
         Optional<Participants> project = participantsService.getParticipantById(p.getProjetcId());
