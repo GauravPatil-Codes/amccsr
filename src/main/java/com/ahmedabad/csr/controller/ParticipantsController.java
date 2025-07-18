@@ -1,5 +1,6 @@
 package com.ahmedabad.csr.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,13 @@ import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.repository.ParticipantsRepository;
 import com.ahmedabad.csr.repository.ProjectRepository;
+import com.ahmedabad.csr.services.EmailService;
 import com.ahmedabad.csr.services.ParticipantsService;
 import com.ahmedabad.csr.services.ProjectServices;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @RestController
 
 public class ParticipantsController {
@@ -30,6 +36,10 @@ public class ParticipantsController {
     private ParticipantsRepository participantsRepository;
     @Autowired
     private ProjectServices ProjectServices;
+        @Autowired
+    private EmailService emailService;
+
+    private static final Logger logger = LoggerFactory.getLogger(ParticipantsService.class);
 
     @PostMapping("/createParticipant")
     public ResponseEntity<Map<String, Object>> createParticipant(@RequestBody Participants participant) {
@@ -119,4 +129,67 @@ public class ParticipantsController {
         response.put("message", "Participant deleted successfully");
         return ResponseEntity.ok(response);
     }
+
+
+
+   @PostMapping("/send-email")
+    public ResponseEntity<Map<String, Object>> sendEmail(@RequestBody Map<String, String> emailData) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+        
+            String to = emailData.get("to");           // participant email
+            String subject = emailData.get("subject"); // email subject  
+            String body = emailData.get("body");       // email body/message
+            
+            logger.info("📧 Sending email to {} with subject: {}", to, subject);
+            
+            // Validate required fields
+            if (to == null || to.trim().isEmpty()) {
+                response.put("success", false);
+                response.put("error", "Recipient email (to) is required");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            if (subject == null || subject.trim().isEmpty()) {
+                response.put("success", false);
+                response.put("error", "Email subject is required");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            if (body == null || body.trim().isEmpty()) {
+                response.put("success", false);
+                response.put("error", "Email body is required");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            // Send email using your existing service
+            emailService.sendEmail(to, subject, body);
+            
+            // If we reach here, email was sent successfully
+            response.put("success", true);
+            response.put("message", "Email sent successfully");
+            response.put("timestamp", LocalDateTime.now().toString());
+            response.put("to", to);
+            response.put("subject", subject);
+            
+            logger.info("✅ Email sent successfully to {}", to);
+            return ResponseEntity.ok(response);
+            
+        } catch (RuntimeException e) {
+            logger.error("❌ Runtime error sending email: {}", e.getMessage(), e);
+            response.put("success", false);
+            response.put("error", "Failed to send email: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            
+        } catch (Exception e) {
+            logger.error("❌ Unexpected error sending email: {}", e.getMessage(), e);
+            response.put("success", false);
+            response.put("error", "Internal server error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
+   
 }
