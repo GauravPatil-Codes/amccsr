@@ -24,4 +24,8 @@ public interface CompaniesRepository extends JpaRepository<Companies, Integer> {
     
     Page<Companies> findByCompanynameContainingAndCategoryIdAndStatus(
             String companyName, int categoryId, String status, Pageable pageable);
+
+	Page<Companies> findByAuthcomprepresentativenameContaining(String representativeName, Pageable pageable);
+
+	Page<Companies> findByAuthcomprepresentativeemail(String email, Pageable pageable);
 }

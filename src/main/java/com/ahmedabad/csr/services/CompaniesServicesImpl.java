@@ -2,18 +2,15 @@ package com.ahmedabad.csr.services;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.ahmedabad.csr.entities.Companies;
 import com.ahmedabad.csr.repository.CompaniesRepository;
 
 @Service
 public class CompaniesServicesImpl implements CompaninesServices {
-
     
     @Autowired
     private CompaniesRepository companiesRepository;
@@ -24,6 +21,16 @@ public class CompaniesServicesImpl implements CompaninesServices {
         if (company.getCompanyname() == null || company.getCompanyname().isEmpty()) {
             throw new IllegalArgumentException("Company name cannot be empty");
         }
+        
+        // Additional validation for representative fields
+        if (company.getAuthcomprepresentativename() == null || company.getAuthcomprepresentativename().isEmpty()) {
+            throw new IllegalArgumentException("Authorized company representative name cannot be empty");
+        }
+        
+        if (company.getAuthcomprepresentativeemail() == null || company.getAuthcomprepresentativeemail().isEmpty()) {
+            throw new IllegalArgumentException("Authorized company representative email cannot be empty");
+        }
+        
         return companiesRepository.save(company);
     }
 
@@ -37,7 +44,7 @@ public class CompaniesServicesImpl implements CompaninesServices {
         Companies company = companiesRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found with id: " + companyId));
         
-        // Update fields
+        // Update all fields including the representative fields
         if (companyDetails.getCompanyname() != null) {
             company.setCompanyname(companyDetails.getCompanyname());
         }
@@ -49,6 +56,14 @@ public class CompaniesServicesImpl implements CompaninesServices {
         }
         if (companyDetails.getStatus() != null) {
             company.setStatus(companyDetails.getStatus());
+        }
+        
+        // Update representative fields
+        if (companyDetails.getAuthcomprepresentativename() != null) {
+            company.setAuthcomprepresentativename(companyDetails.getAuthcomprepresentativename());
+        }
+        if (companyDetails.getAuthcomprepresentativeemail() != null) {
+            company.setAuthcomprepresentativeemail(companyDetails.getAuthcomprepresentativeemail());
         }
         
         return companiesRepository.save(company);
@@ -96,4 +111,16 @@ public class CompaniesServicesImpl implements CompaninesServices {
             return companiesRepository.findAll(pageable);
         }
     }
+    
+    // Optional: Add method to search by representative name
+    public Page<Companies> getCompaniesByRepresentativeName(String representativeName, Pageable pageable) {
+        return companiesRepository.findByAuthcomprepresentativenameContaining(representativeName, pageable);
+    }
+    
+    // Optional: Add method to search by representative mobile number
+    public Page<Companies> getCompaniesByRepresentativeMobile(String email, Pageable pageable) {
+        return companiesRepository.findByAuthcomprepresentativeemail(email, pageable);
+    }
+
+	
 }

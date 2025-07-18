@@ -15,4 +15,6 @@ public interface CompaninesServices {
     Page<Companies> getAllCompanies(Pageable pageable);
     Page<Companies> getCompaniesByCategory(int categoryId, Pageable pageable);
     Page<Companies> filterCompanies(String companyName, Integer categoryId, String status, Pageable pageable);
+  
 }
+

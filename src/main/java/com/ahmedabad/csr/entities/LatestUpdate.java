@@ -1,5 +1,6 @@
 package com.ahmedabad.csr.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,8 @@ public class LatestUpdate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int letestupdateid;
     private String letestupdatetitle;
+    
+    @Column( length = 5000)
     private String letestupdatedesc;
     private String letestupdateimage;
     private String status;
