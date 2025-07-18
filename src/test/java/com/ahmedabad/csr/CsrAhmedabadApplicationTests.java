@@ -8,6 +8,7 @@ class CsrAhmedabadApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("hello lets strart");
 	}
 
 }

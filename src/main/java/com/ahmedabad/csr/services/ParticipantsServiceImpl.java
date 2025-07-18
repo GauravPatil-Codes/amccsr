@@ -63,13 +63,7 @@ public class ParticipantsServiceImpl implements ParticipantsService {
         participantsRepository.deleteById(id);
     }
 
-    // @Override
-    // public Participants saveParticipant(Participants participant) {
-    // String token = generateUniqueToken();
-    // participant.setToken(token);
-    // return participantsRepository.save(participant);
-    // }
-
+    
     @Override
     public Participants saveParticipant(Participants participant) {
         // Generate unique token
