@@ -1,5 +1,6 @@
 package com.ahmedabad.csr.services;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -16,5 +17,9 @@ public interface CompaninesServices {
     Page<Companies> getCompaniesByCategory(int categoryId, Pageable pageable);
     Page<Companies> filterCompanies(String companyName, Integer categoryId, String status, Pageable pageable);
   
+      Optional<Companies> getByRepresentativeEmail(String email);
+
+    // optional helper if you want the service to return a Map like usersService
+    // Map<String, Object> loginCorporate(String email, String rawPassword);
 }
 

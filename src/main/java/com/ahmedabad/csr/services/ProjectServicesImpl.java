@@ -85,4 +85,8 @@ public class ProjectServicesImpl implements ProjectServices {
     return projectRepository.findByProjectStatus(projectStatus, pageable);
 }
 
+@Override
+public Page<Project> findByprojectDEpartmentName(String projectDEpartmentName, Pageable pageable){
+    return projectRepository.findByprojectDEpartmentName(projectDEpartmentName, pageable);
+};
 }
