@@ -18,6 +18,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable);
 
     Page<Project> findByProjectStatus(String projectStatus, Pageable pageable);
+    Page<Project> findByprojectDEpartmentName(String projectDEpartmentName, Pageable pageable);
 
     @Query("SELECT p FROM Project p " +
             "WHERE (:ngoId IS NULL OR p.ngoId = :ngoId) " +

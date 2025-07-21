@@ -28,4 +28,5 @@ public interface ProjectServices {
     Page<Project> getProjectByProjectStatus(String projectStatus, Pageable pageable);
 
     Page<Project> getprojetcByCompanyId(int companieId, Pageable pageable);
+    Page<Project> findByprojectDEpartmentName(String projectDEpartmentName, Pageable pageable);
 }

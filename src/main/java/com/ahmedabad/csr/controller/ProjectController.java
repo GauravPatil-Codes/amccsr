@@ -343,4 +343,32 @@ public ResponseEntity<Map<String, Object>> filterProjects(
     }
   }
 
+
+  // list by departmentname
+  @GetMapping("/projects/bydepartment")
+  public ResponseEntity<Map<String, Object>> findByProjectdepartmentname(
+      @RequestParam String projectDEpartmentName,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Project> projectPage = projectRepository.findByprojectDEpartmentName(projectDEpartmentName, pageable);
+
+    Map<String, Object> response = new HashMap<>();
+    if (projectPage.hasContent()) {
+      response.put("status", 200);
+      response.put("message", "Projects found by project department name successfully");
+      response.put("data", projectPage.getContent());
+      response.put("currentPage", projectPage.getNumber());
+      response.put("totalItems", projectPage.getTotalElements());
+      response.put("totalPages", projectPage.getTotalPages());
+      return ResponseEntity.ok(response);
+    } else {
+      response.put("status", 404);
+      response.put("message", "No projects found for this status");
+      return ResponseEntity.status(404).body(response);
+    }
+  }
+
+
 }
