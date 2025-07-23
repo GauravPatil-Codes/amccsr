@@ -11,12 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ahmedabad.csr.entities.SuccessStory;
 import com.ahmedabad.csr.entities.Users;
 import com.ahmedabad.csr.repository.UsersRepository;
 
 @Service
 public class UsersServiceImpl implements UsersService {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 
     @Autowired
@@ -25,7 +26,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Map<String, Object> registerUser(Map<String, String> userData) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             // Extract user data
             String name = userData.get("name");
@@ -35,7 +36,7 @@ public class UsersServiceImpl implements UsersService {
             String organizationname = userData.get("organizationname");
             String departmentname = userData.get("departmentname");
             String phonenumber = userData.get("phonenumber");
-            
+
             // Validate required fields
             if (email == null || email.trim().isEmpty()) {
                 response.put("status", 400);
@@ -43,21 +44,21 @@ public class UsersServiceImpl implements UsersService {
                 response.put("data", null);
                 return response;
             }
-            
+
             if (password == null || password.trim().isEmpty()) {
                 response.put("status", 400);
                 response.put("message", "Password is required");
                 response.put("data", null);
                 return response;
             }
-            
+
             if (name == null || name.trim().isEmpty()) {
                 response.put("status", 400);
                 response.put("message", "Name is required");
                 response.put("data", null);
                 return response;
             }
-            
+
             // Check if email already exists
             if (usersRepository.existsByEmail(email.trim().toLowerCase())) {
                 response.put("status", 400);
@@ -65,7 +66,7 @@ public class UsersServiceImpl implements UsersService {
                 response.put("data", null);
                 return response;
             }
-            
+
             // Create new user
             Users newUser = new Users();
             newUser.setName(name.trim());
@@ -75,10 +76,10 @@ public class UsersServiceImpl implements UsersService {
             newUser.setOrganizationname(organizationname != null ? organizationname.trim() : null);
             newUser.setDepartmentname(departmentname != null ? departmentname.trim() : null);
             newUser.setPhonenumber(phonenumber != null ? phonenumber.trim() : null);
-            
+
             // Save user
             Users savedUser = usersRepository.save(newUser);
-            
+
             // Prepare user data for response
             Map<String, Object> userData_response = new HashMap<>();
             userData_response.put("userId", savedUser.getId());
@@ -88,15 +89,15 @@ public class UsersServiceImpl implements UsersService {
             userData_response.put("organizationname", savedUser.getOrganizationname());
             userData_response.put("departmentname", savedUser.getDepartmentname());
             userData_response.put("phonenumber", savedUser.getPhonenumber());
-            
+
             // Return standardized success response
             response.put("status", 200);
             response.put("message", "User registered successfully");
             response.put("data", userData_response);
-            
+
             logger.info("✅ User registered successfully: {} with ID: {}", email, savedUser.getId());
             return response;
-            
+
         } catch (Exception e) {
             logger.error("❌ Error registering user: {}", e.getMessage(), e);
             response.put("status", 500);
@@ -109,7 +110,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Map<String, Object> loginUser(String email, String password) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             // Validate input
             if (email == null || email.trim().isEmpty()) {
@@ -118,20 +119,20 @@ public class UsersServiceImpl implements UsersService {
                 response.put("data", null);
                 return response;
             }
-            
+
             if (password == null || password.trim().isEmpty()) {
                 response.put("status", 400);
                 response.put("message", "Password is required");
                 response.put("data", null);
                 return response;
             }
-            
+
             // Find user by email and password
             Optional<Users> userOpt = usersRepository.findByEmailAndPassword(email.trim().toLowerCase(), password);
-            
+
             if (userOpt.isPresent()) {
                 Users user = userOpt.get();
-                
+
                 // Prepare user data for response
                 Map<String, Object> userData_response = new HashMap<>();
                 userData_response.put("userId", user.getId());
@@ -141,25 +142,25 @@ public class UsersServiceImpl implements UsersService {
                 userData_response.put("organizationname", user.getOrganizationname());
                 userData_response.put("departmentname", user.getDepartmentname());
                 userData_response.put("phonenumber", user.getPhonenumber());
-                
+
                 // Login successful
                 response.put("status", 200);
                 response.put("message", "Login successful");
                 response.put("data", userData_response);
-                
+
                 logger.info("✅ User logged in successfully: {} (ID: {})", email, user.getId());
                 return response;
-                
+
             } else {
                 // Login failed
                 response.put("status", 401);
                 response.put("message", "Invalid email or password");
                 response.put("data", null);
-                
+
                 logger.warn("❌ Failed login attempt for email: {}", email);
                 return response;
             }
-            
+
         } catch (Exception e) {
             logger.error("❌ Error during login: {}", e.getMessage(), e);
             response.put("status", 500);
@@ -210,100 +211,64 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Map<String, Object> updateUser(Long id, Map<String, String> userData) {
-        Map<String, Object> response = new HashMap<>();
-        
-        try {
-            Optional<Users> userOpt = usersRepository.findById(id);
-            
-            if (userOpt.isEmpty()) {
-                response.put("status", 404);
-                response.put("message", "User not found");
-                response.put("data", null);
-                return response;
-            }
-            
-            Users user = userOpt.get();
-            
-            // Update fields if provided
-            if (userData.get("name") != null && !userData.get("name").trim().isEmpty()) {
-                user.setName(userData.get("name").trim());
-            }
-            
-            if (userData.get("role") != null && !userData.get("role").trim().isEmpty()) {
-                user.setRole(userData.get("role").toUpperCase());
-            }
-            
-            if (userData.get("organizationname") != null) {
-                user.setOrganizationname(userData.get("organizationname").trim());
-            }
-            
-            if (userData.get("departmentname") != null) {
-                user.setDepartmentname(userData.get("departmentname").trim());
-            }
-            
-            if (userData.get("phonenumber") != null) {
-                user.setPhonenumber(userData.get("phonenumber").trim());
-            }
-            
-            // Save updated user
-            Users updatedUser = usersRepository.save(user);
-            
-            // Prepare user data for response
-            Map<String, Object> userData_response = new HashMap<>();
-            userData_response.put("userId", updatedUser.getId());
-            userData_response.put("name", updatedUser.getName());
-            userData_response.put("email", updatedUser.getEmail());
-            userData_response.put("role", updatedUser.getRole());
-            userData_response.put("organizationname", updatedUser.getOrganizationname());
-            userData_response.put("departmentname", updatedUser.getDepartmentname());
-            userData_response.put("phonenumber", updatedUser.getPhonenumber());
-            
-            response.put("status", 200);
-            response.put("message", "User updated successfully");
-            response.put("data", userData_response);
-            
-            logger.info("✅ User updated successfully: {}", updatedUser.getEmail());
-            return response;
-            
-        } catch (Exception e) {
-            logger.error("❌ Error updating user: {}", e.getMessage(), e);
-            response.put("status", 500);
-            response.put("message", "Update failed: " + e.getMessage());
-            response.put("data", null);
-            return response;
+    public Users updateUser(long id, Users updatedUser) {
+        Users existingUser = usersRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (updatedUser.getName() != null) {
+            existingUser.setName(updatedUser.getName());
         }
+        if (updatedUser.getRole() != null) {
+            existingUser.setRole(updatedUser.getRole());
+        }
+        if (updatedUser.getEmail() != null) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getOrganizationname() != null) {
+            existingUser.setOrganizationname(updatedUser.getOrganizationname());
+        }
+        if (updatedUser.getDepartmentname() != null) {
+            existingUser.setDepartmentname(updatedUser.getDepartmentname());
+        }
+        if (updatedUser.getPhonenumber() != null) {
+            existingUser.setPhonenumber(updatedUser.getPhonenumber());
+        }
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().trim().isEmpty()) {
+            existingUser.setPassword(updatedUser.getPassword());
+        }
+
+        return usersRepository.save(existingUser);
     }
 
     @Override
     public Map<String, Object> deleteUser(Long id) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             Optional<Users> userOpt = usersRepository.findById(id);
-            
+
             if (userOpt.isEmpty()) {
                 response.put("status", 404);
                 response.put("message", "User not found");
                 response.put("data", null);
                 return response;
             }
-            
+
             Users user = userOpt.get();
             usersRepository.deleteById(id);
-            
+
             Map<String, Object> deletedUserData = new HashMap<>();
             deletedUserData.put("deletedUserId", id);
             deletedUserData.put("deletedUserEmail", user.getEmail());
             deletedUserData.put("deletedUserName", user.getName());
-            
+
             response.put("status", 200);
             response.put("message", "User deleted successfully");
             response.put("data", deletedUserData);
-            
+
             logger.info("✅ User deleted successfully: {} (ID: {})", user.getEmail(), id);
             return response;
-            
+
         } catch (Exception e) {
             logger.error("❌ Error deleting user: {}", e.getMessage(), e);
             response.put("status", 500);
@@ -316,16 +281,16 @@ public class UsersServiceImpl implements UsersService {
     // Helper method to get all users with standardized response
     public Map<String, Object> getAllUsersResponse() {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             List<Users> users = usersRepository.findAll();
-            
+
             response.put("status", 200);
             response.put("message", "Users fetched successfully");
             response.put("data", users);
-            
+
             return response;
-            
+
         } catch (Exception e) {
             logger.error("❌ Error getting all users: {}", e.getMessage(), e);
             response.put("status", 500);
@@ -338,20 +303,20 @@ public class UsersServiceImpl implements UsersService {
     // Helper method to check email with standardized response
     public Map<String, Object> checkEmailResponse(String email) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             boolean exists = usersRepository.existsByEmail(email.trim().toLowerCase());
-            
+
             Map<String, Object> emailData = new HashMap<>();
             emailData.put("email", email);
             emailData.put("exists", exists);
-            
+
             response.put("status", 200);
             response.put("message", exists ? "Email already exists" : "Email is available");
             response.put("data", emailData);
-            
+
             return response;
-            
+
         } catch (Exception e) {
             logger.error("❌ Error checking email: {}", e.getMessage(), e);
             response.put("status", 500);
@@ -364,13 +329,13 @@ public class UsersServiceImpl implements UsersService {
     // Helper method to get user by email with standardized response
     public Map<String, Object> getUserByEmailResponse(String email) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             Optional<Users> userOpt = findByEmail(email);
-            
+
             if (userOpt.isPresent()) {
                 Users user = userOpt.get();
-                
+
                 Map<String, Object> userData_response = new HashMap<>();
                 userData_response.put("userId", user.getId());
                 userData_response.put("name", user.getName());
@@ -379,7 +344,7 @@ public class UsersServiceImpl implements UsersService {
                 userData_response.put("organizationname", user.getOrganizationname());
                 userData_response.put("departmentname", user.getDepartmentname());
                 userData_response.put("phonenumber", user.getPhonenumber());
-                
+
                 response.put("status", 200);
                 response.put("message", "User found successfully");
                 response.put("data", userData_response);
@@ -388,9 +353,9 @@ public class UsersServiceImpl implements UsersService {
                 response.put("message", "User not found");
                 response.put("data", null);
             }
-            
+
             return response;
-            
+
         } catch (Exception e) {
             logger.error("❌ Error getting user by email: {}", e.getMessage(), e);
             response.put("status", 500);
@@ -403,6 +368,12 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Optional<Users> getUserByEmailAndPassword(String email, String password) {
         return usersRepository.findByEmail(email)
-            .filter(u -> u.getPassword() != null && u.getPassword().equals(password));
+                .filter(u -> u.getPassword() != null && u.getPassword().equals(password));
+    }
+    
+     @Override
+    public Users getUserById(long id) {
+        return usersRepository.findById(id)
+                .orElse(null); // return null if not found
     }
 }

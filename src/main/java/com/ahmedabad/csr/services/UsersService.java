@@ -16,5 +16,6 @@ public interface UsersService {
     boolean emailExists(String email);
      Optional<Users> findById(Long id);
      Map<String, Object> deleteUser(Long id);
-     Map<String, Object> updateUser(Long id, Map<String, String> userData); 
+   Users getUserById(long id);
+    Users updateUser(long id, Users updatedUser) ;
 }
