@@ -37,6 +37,7 @@ public class ProjectServicesImpl implements ProjectServices {
         existing.setImpactpeople(project.getImpactpeople());
         existing.setProjectShortDescription(project.getProjectShortDescription());
         existing.setProjectDEpartmentName(project.getProjectDEpartmentName());
+        existing.setCategoryId(project.getCategoryId());
         // existing.setProjectDocuments(project.getProjectDocuments());
 
         return projectRepository.save(existing);
