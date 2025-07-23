@@ -63,6 +63,9 @@ public class CompaniesServicesImpl implements CompaninesServices {
         if (companyDetails.getStatus() != null) {
             company.setStatus(companyDetails.getStatus());
         }
+        if (companyDetails.getPassword() != null) {
+            company.setPassword(companyDetails.getPassword());
+        }
 
         // Update representative fields
         if (companyDetails.getAuthcomprepresentativename() != null) {
