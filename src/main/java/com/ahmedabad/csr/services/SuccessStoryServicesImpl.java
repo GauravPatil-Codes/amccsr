@@ -47,6 +47,10 @@ public class SuccessStoryServicesImpl implements SuccessStoryServices {
         if (updatedSuccessStory.getSuccessstoryImage() != null) {
             existingStory.setSuccessstoryImage(updatedSuccessStory.getSuccessstoryImage());
         }
+        if (updatedSuccessStory.getSuccessstoryVideo() != null) {
+            existingStory.setSuccessstoryVideo(updatedSuccessStory.getSuccessstoryVideo());
+        }
+        
         if (updatedSuccessStory.getCategoryId() != 0) {
             existingStory.setCategoryId(updatedSuccessStory.getCategoryId());
         }

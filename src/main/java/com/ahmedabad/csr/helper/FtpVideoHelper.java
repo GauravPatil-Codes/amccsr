@@ -9,7 +9,7 @@ import org.apache.commons.net.ftp.FTPClient;
 
 @Component
 public class FtpVideoHelper {
-private static final String FTP_SERVER = "89.117.188.211";
+private static final String FTP_SERVER = "31.97.234.95";
     private static final String FTP_USERNAME = "u703629182.srsvideos";
     private static final String FTP_PASSWORD = "Nc#7v36F]$~CP7T5";
     private static final int port = 21;
