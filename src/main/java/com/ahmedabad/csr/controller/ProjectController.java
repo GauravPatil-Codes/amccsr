@@ -369,6 +369,33 @@ public ResponseEntity<Map<String, Object>> filterProjects(
       return ResponseEntity.status(404).body(response);
     }
   }
+  
+  @GetMapping("/projects/search")
+  public ResponseEntity<Map<String, Object>> searchProjects(
+          @RequestParam String keyword,
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size) {
+
+      Pageable pageable = PageRequest.of(page, size);
+      Page<Project> projectPage = projectRepository.searchProjects(keyword, pageable);
+
+      Map<String, Object> response = new HashMap<>();
+      if (projectPage.hasContent()) {
+          response.put("status", 200);
+          response.put("message", "Projects found successfully");
+          response.put("data", projectPage.getContent());
+          response.put("currentPage", projectPage.getNumber());
+          response.put("totalItems", projectPage.getTotalElements());
+          response.put("totalPages", projectPage.getTotalPages());
+          return ResponseEntity.ok(response);
+      } else {
+          response.put("status", 404);
+          response.put("message", "No projects found for this keyword");
+          return ResponseEntity.status(404).body(response);
+      }
+  }
+
+
 
 
 }

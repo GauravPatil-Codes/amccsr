@@ -9,28 +9,31 @@ import org.springframework.data.repository.query.Param;
 import com.ahmedabad.csr.entities.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
-    Page<Project> findByCategoryId(int categoryId, Pageable pageable);
+	Page<Project> findByCategoryId(int categoryId, Pageable pageable);
 
-    Page<Project> findByNgoId(int ngoId, Pageable pageable);
+	Page<Project> findByNgoId(int ngoId, Pageable pageable);
 
-    Page<Project> findByProjectBudget(String projectBudget, Pageable pageable);
+	Page<Project> findByProjectBudget(String projectBudget, Pageable pageable);
 
-    Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable);
+	Page<Project> getProjectByProjectBudget(String projectBudget, Pageable pageable);
 
-    Page<Project> findByProjectStatus(String projectStatus, Pageable pageable);
-    Page<Project> findByprojectDEpartmentName(String projectDEpartmentName, Pageable pageable);
+	Page<Project> findByProjectStatus(String projectStatus, Pageable pageable);
 
-    @Query("SELECT p FROM Project p " +
-            "WHERE (:ngoId IS NULL OR p.ngoId = :ngoId) " +
-            "AND (:categoryId IS NULL OR p.categoryId = :categoryId) " +
-            "AND (:projectBudget IS NULL OR p.projectBudget = :projectBudget) " +
-            "AND (:status IS NULL OR p.projectStatus = :status)")
-    Page<Project> filterProjects(@Param("ngoId") Integer ngoId,
-            @Param("categoryId") Integer categoryId,
-            @Param("projectBudget") String projectBudget,
-            @Param("status") String status,
-            Pageable pageable);
+	Page<Project> findByprojectDEpartmentName(String projectDEpartmentName, Pageable pageable);
 
-    Page<Project> findBycompanieId(int companieId, Pageable pageable);
+	@Query("SELECT p FROM Project p " + "WHERE (:ngoId IS NULL OR p.ngoId = :ngoId) "
+			+ "AND (:categoryId IS NULL OR p.categoryId = :categoryId) "
+			+ "AND (:projectBudget IS NULL OR p.projectBudget = :projectBudget) "
+			+ "AND (:status IS NULL OR p.projectStatus = :status)")
+	Page<Project> filterProjects(@Param("ngoId") Integer ngoId, @Param("categoryId") Integer categoryId,
+			@Param("projectBudget") String projectBudget, @Param("status") String status, Pageable pageable);
+
+	Page<Project> findBycompanieId(int companieId, Pageable pageable);
+
+	@Query("SELECT p FROM Project p " +
+		       "WHERE LOWER(p.projetcName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+		       "OR LOWER(p.projetcDescription) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+		       "OR LOWER(p.projectLocation) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+		Page<Project> searchProjects(@Param("keyword") String keyword, Pageable pageable);
 
 }
