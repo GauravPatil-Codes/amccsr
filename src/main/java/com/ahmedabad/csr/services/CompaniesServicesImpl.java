@@ -2,18 +2,28 @@ package com.ahmedabad.csr.services;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
 import com.ahmedabad.csr.entities.Companies;
 import com.ahmedabad.csr.repository.CompaniesRepository;
 
 @Service
 public class CompaniesServicesImpl implements CompaninesServices {
 
+    private static final Logger logger = LoggerFactory.getLogger(CompaniesServicesImpl.class);
+
     @Autowired
     private CompaniesRepository companiesRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public Companies addCompany(Companies company) {
@@ -37,7 +47,12 @@ public class CompaniesServicesImpl implements CompaninesServices {
             throw new IllegalArgumentException(
                     "A company with this email already exists: " + company.getAuthcomprepresentativeemail());
         }
-        return companiesRepository.save(company);
+        Companies savedCompany = companiesRepository.save(company);
+
+        // Send welcome email asynchronously
+        sendWelcomeEmailAsync(company.getAuthcomprepresentativename(), company.getAuthcomprepresentativeemail());
+
+        return savedCompany;
     }
 
     @Override
@@ -133,6 +148,20 @@ public class CompaniesServicesImpl implements CompaninesServices {
 
     public Optional<Companies> getByRepresentativeEmail(String email) {
         return companiesRepository.findByAuthcomprepresentativeemail(email);
+    }
+
+    /**
+     * Send welcome email asynchronously to corporate user after registration
+     */
+    @Async
+    private void sendWelcomeEmailAsync(String representativeName, String email) {
+        try {
+            emailService.sendWelcomeEmail(email, representativeName);
+            logger.info("📧 Welcome email queued for sending to corporate: {}", email);
+        } catch (Exception e) {
+            logger.error("❌ Failed to queue welcome email for corporate {}: {}", email, e.getMessage());
+            // Don't throw exception - email failure should not affect registration
+        }
     }
 
 }

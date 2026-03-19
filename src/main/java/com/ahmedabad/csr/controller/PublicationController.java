@@ -3,7 +3,6 @@ package com.ahmedabad.csr.controller;
 import com.ahmedabad.csr.entities.Publication;
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.services.PublicationService;
-import com.ahmedabad.csr.services.PublicationServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,7 @@ import java.util.Optional;
 public class PublicationController {
 
     @Autowired
-    private PublicationServiceImpl service;
+    private PublicationService service;
 
     @PostMapping("/addpublications")
     public ApiResponse<Publication> create(@RequestBody Publication publication) {

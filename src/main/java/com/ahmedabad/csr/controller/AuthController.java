@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import com.ahmedabad.csr.entities.Companies;
 import com.ahmedabad.csr.entities.Users;
 import com.ahmedabad.csr.services.CompaninesServices;
+import com.ahmedabad.csr.services.EmailService;
 import com.ahmedabad.csr.services.UsersService;
-import com.ahmedabad.csr.services.UsersServiceImpl;
 
 @RestController
 public class AuthController {
@@ -27,10 +27,10 @@ public class AuthController {
     private UsersService usersService;
 
     @Autowired
-    private UsersServiceImpl usersServiceImpl;
+    private CompaninesServices companinesServices;
 
     @Autowired
-    private CompaninesServices companinesServices;
+    private EmailService emailService;
 
     /**
      * Register new user
@@ -114,7 +114,7 @@ public class AuthController {
      */
     @GetMapping("/check-email")
     public ResponseEntity<Map<String, Object>> checkEmail(@RequestParam String email) {
-        Map<String, Object> response = usersServiceImpl.checkEmailResponse(email);
+        Map<String, Object> response = usersService.checkEmailResponse(email);
 
         int status = (Integer) response.get("status");
         return ResponseEntity.status(status).body(response);
@@ -126,7 +126,7 @@ public class AuthController {
      */
     @GetMapping("/users")
     public ResponseEntity<Map<String, Object>> getAllUsers() {
-        Map<String, Object> response = usersServiceImpl.getAllUsersResponse();
+        Map<String, Object> response = usersService.getAllUsersResponse();
 
         int status = (Integer) response.get("status");
         return ResponseEntity.status(status).body(response);
@@ -138,7 +138,7 @@ public class AuthController {
      */
     @GetMapping("/user")
     public ResponseEntity<Map<String, Object>> getUserByEmail(@RequestParam String email) {
-        Map<String, Object> response = usersServiceImpl.getUserByEmailResponse(email);
+        Map<String, Object> response = usersService.getUserByEmailResponse(email);
 
         int status = (Integer) response.get("status");
         return ResponseEntity.status(status).body(response);
@@ -192,5 +192,40 @@ public class AuthController {
         response.put("data", user);
 
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Test email endpoint - for debugging email issues
+     * POST /test-email
+     */
+    @PostMapping("/test-email")
+    public ResponseEntity<Map<String, Object>> testEmail(@RequestBody Map<String, String> emailData) {
+        Map<String, Object> response = new HashMap<>();
+
+        String to = emailData.get("to");
+        String name = emailData.getOrDefault("name", "Test User");
+
+        if (to == null || to.trim().isEmpty()) {
+            response.put("status", 400);
+            response.put("message", "Email address is required");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        try {
+            logger.info("📧 Testing email to: {}", to);
+            emailService.sendWelcomeEmail(to, name);
+            response.put("status", 200);
+            response.put("message", "Test email sent successfully to: " + to);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("❌ Test email failed: {}", e.getMessage(), e);
+            response.put("status", 500);
+            response.put("message", "Test email failed: " + e.getMessage());
+            response.put("errorType", e.getClass().getName());
+            if (e.getCause() != null) {
+                response.put("rootCause", e.getCause().getClass().getName() + ": " + e.getCause().getMessage());
+            }
+            return ResponseEntity.status(500).body(response);
+        }
     }
 }

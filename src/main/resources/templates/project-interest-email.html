@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Your Interest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: #e0f7e9;
+            font-size: 14px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .greeting {
+            font-size: 22px;
+            color: #333333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .message {
+            color: #555555;
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .project-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 4px solid #11998e;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .project-card h3 {
+            color: #11998e;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .project-details {
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .project-details p {
+            color: #555555;
+            font-size: 14px;
+            margin: 8px 0;
+        }
+        .project-details strong {
+            color: #333333;
+        }
+        .next-steps {
+            background-color: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .next-steps h3 {
+            color: #2e7d32;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .next-steps ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .next-steps ul li {
+            color: #555555;
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+        }
+        .next-steps ul li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #11998e;
+            font-weight: bold;
+        }
+        .thank-you {
+            background: linear-gradient(135deg, #fff9c4 0%, #ffecb3 100%);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 25px 0;
+        }
+        .thank-you p {
+            color: #f57c00;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+        .footer p {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .contact-info {
+            background-color: #e3f2fd;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .contact-info p {
+            color: #1565c0;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🎉 Thank You for Showing Interest!</h1>
+            <p>Your Commitment Makes a Difference</p>
+        </div>
+
+        <div class="content">
+            <p class="greeting">Dear {{name}},</p>
+
+            <p class="message">
+                Thank you for showing interest in the project <strong>"{{projectName}}"</strong> on the AMC CSR Portal. Your willingness to contribute to meaningful social impact is truly appreciated!
+            </p>
+
+            <div class="project-card">
+                <h3>📋 Project Details</h3>
+                <div class="project-details">
+                    <p><strong>Project Name:</strong> {{projectName}}</p>
+                    <p><strong>Category:</strong> {{category}}</p>
+                    <p><strong>Location:</strong> {{location}}</p>
+                    <p><strong>Estimated Budget:</strong> ₹{{budget}}</p>
+                    <p><strong>Impact:</strong> {{impact}} people</p>
+                </div>
+            </div>
+
+            <div class="thank-you">
+                <p>🌟 Your interest has been recorded successfully! Our team will review your application and get back to you soon.</p>
+            </div>
+
+            <div class="next-steps">
+                <h3>📌 What Happens Next?</h3>
+                <ul>
+                    <li>Our team will review your interest submission</li>
+                    <li>You will receive a confirmation call/email within 2-3 working days</li>
+                    <li>We will share detailed project documentation and contribution guidelines</li>
+                    <li>A meeting will be scheduled to discuss the partnership details</li>
+                    <li>Upon agreement, you can begin your contribution journey</li>
+                </ul>
+            </div>
+
+            <p class="message">
+                By participating in this project, you're joining hands with numerous organizations working towards creating sustainable change in our communities. Together, we can make a lasting impact.
+            </p>
+
+            <div class="contact-info">
+                <p><strong>📧 Need Assistance?</strong></p>
+                <p>Email: support@amccsrportal.in</p>
+                <p>We're here to help you every step of the way!</p>
+            </div>
+
+            <p class="message" style="margin-top: 30px;">
+                Once again, thank you for your interest and commitment to social responsibility.<br><br>
+                <strong>Best regards,</strong><br>
+                <strong>Team AMC CSR Portal</strong><br>
+                <em style="color: #888;">Ahmedabad Municipal Corporation</em>
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 AMC CSR Portal. All rights reserved.</p>
+            <p>This is an automated email. Please do not reply directly to this message.</p>
+        </div>
+    </div>
+</body>
+</html>

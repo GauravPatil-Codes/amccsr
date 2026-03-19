@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ahmedabad.csr.entities.Documents;
 import com.ahmedabad.csr.repository.ApiResponse;
-import com.ahmedabad.csr.services.DocumentServiceImpl;
+import com.ahmedabad.csr.services.DocumentService;
 
 @RestController
 public class DocumentController {
 
     @Autowired
-    private DocumentServiceImpl documentService;
+    private DocumentService documentService;
 
     @PostMapping("/addDocuments")
     public ResponseEntity<ApiResponse<Documents>> createDocuments(@RequestBody Documents documents) {

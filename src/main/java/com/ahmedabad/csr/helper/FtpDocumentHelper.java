@@ -12,7 +12,7 @@ import org.apache.commons.net.ftp.FTPClient;
 public class FtpDocumentHelper {
 
     private static final String FTP_SERVER = "31.97.234.95";
-    private static final String FTP_USERNAME = "u703629182.srsdocuments";
+    private static final String FTP_USERNAME = "u703629182.csrdocuments";
     private static final String FTP_PASSWORD = "1XWt:N?UB#RYBi>i";
     private static final int port = 21;
 
@@ -37,7 +37,7 @@ public class FtpDocumentHelper {
 
             if (done) {
 
-                return "https://lakhpatididi.in/SRS-documents/documents" + remotefilepath;
+                return "https://amccsrportal.in/SRS-documents/documents" + remotefilepath;
             } else {
 
                 int replayCode = ftp.getReplyCode();

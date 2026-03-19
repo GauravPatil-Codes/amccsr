@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.ahmedabad.csr.entities.SuccessStory;
@@ -22,6 +23,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public Map<String, Object> registerUser(Map<String, String> userData) {
@@ -96,6 +100,10 @@ public class UsersServiceImpl implements UsersService {
             response.put("data", userData_response);
 
             logger.info("✅ User registered successfully: {} with ID: {}", email, savedUser.getId());
+
+            // Send welcome email asynchronously
+            sendWelcomeEmailAsync(savedUser.getName(), savedUser.getEmail());
+
             return response;
 
         } catch (Exception e) {
@@ -375,5 +383,19 @@ public class UsersServiceImpl implements UsersService {
     public Users getUserById(long id) {
         return usersRepository.findById(id)
                 .orElse(null); // return null if not found
+    }
+
+    /**
+     * Send welcome email asynchronously to avoid blocking the registration process
+     */
+    @Async
+    private void sendWelcomeEmailAsync(String name, String email) {
+        try {
+            emailService.sendWelcomeEmail(email, name);
+            logger.info("📧 Welcome email queued for sending to: {}", email);
+        } catch (Exception e) {
+            logger.error("❌ Failed to queue welcome email for {}: {}", email, e.getMessage());
+            // Don't throw exception - email failure should not affect registration
+        }
     }
 }

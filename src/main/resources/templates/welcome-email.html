@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to AMC CSR Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: #e0e7ff;
+            font-size: 14px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .greeting {
+            font-size: 22px;
+            color: #333333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .message {
+            color: #555555;
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 6px;
+        }
+        .highlight-box h3 {
+            color: #667eea;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .highlight-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .highlight-box ul li {
+            color: #555555;
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+        .highlight-box ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+        .footer p {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .social-links {
+            margin-top: 15px;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 8px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .divider {
+            height: 1px;
+            background-color: #e9ecef;
+            margin: 25px 0;
+        }
+        .portal-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .portal-info p {
+            color: #856404;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🌟 Welcome to AMC CSR Portal</h1>
+            <p>Empowering Communities Through Corporate Social Responsibility</p>
+        </div>
+
+        <div class="content">
+            <p class="greeting">Dear {{name}},</p>
+
+            <p class="message">
+                Thank you for registering with the <strong>AMC CSR Portal</strong>! We are thrilled to have you join our community of dedicated organizations and individuals committed to making a positive impact in society.
+            </p>
+
+            <div class="highlight-box">
+                <h3>🚀 What You Can Do on Our Portal</h3>
+                <ul>
+                    <li>Browse and discover impactful CSR projects across various categories</li>
+                    <li>Show interest and participate in projects that align with your corporate values</li>
+                    <li>Track your contributions and see the real-world impact you create</li>
+                    <li>Connect with verified NGOs and community organizations</li>
+                    <li>Access detailed project reports and success stories</li>
+                </ul>
+            </div>
+
+            <div class="portal-info">
+                <p><strong>📧 Need Help?</strong> Contact us at support@amccsrportal.in</p>
+                <p><strong>🌐 Visit Portal:</strong> Explore projects and make a difference today!</p>
+            </div>
+
+            <p class="message">
+                Together, we can build a better tomorrow. Your participation in our CSR initiatives will help transform lives and create sustainable change in our communities.
+            </p>
+
+            <p class="message">
+                If you have any questions or need assistance navigating the portal, please don't hesitate to reach out to our support team.
+            </p>
+
+            <p class="message">
+                Once again, welcome to the AMC CSR family! We look forward to seeing the amazing impact we can create together.
+            </p>
+
+            <p class="message" style="margin-top: 30px;">
+                Warm regards,<br>
+                <strong>Team AMC CSR Portal</strong><br>
+                <em style="color: #888;">Ahmedabad Municipal Corporation</em>
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 AMC CSR Portal. All rights reserved.</p>
+            <p>This is an automated email. Please do not reply directly to this message.</p>
+            <div class="social-links">
+                <a href="#">Visit Website</a> •
+                <a href="#">Contact Support</a> •
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

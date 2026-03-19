@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,11 +14,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
+import com.ahmedabad.csr.entities.Category;
 import com.ahmedabad.csr.entities.Participants;
 import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ApiResponse;
+import com.ahmedabad.csr.repository.CategoryRepository;
 import com.ahmedabad.csr.repository.ParticipantsRepository;
 import com.ahmedabad.csr.repository.ProjectRepository;
 import com.ahmedabad.csr.services.EmailService;
@@ -39,16 +44,70 @@ public class ParticipantsController {
         @Autowired
     private EmailService emailService;
 
-    private static final Logger logger = LoggerFactory.getLogger(ParticipantsService.class);
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ParticipantsController.class);
 
     @PostMapping("/createParticipant")
     public ResponseEntity<Map<String, Object>> createParticipant(@RequestBody Participants participant) {
         Participants saved = participantsService.saveParticipant(participant);
+
+        // Send thank you email for showing interest in the project
+        sendProjectInterestEmailAsync(participant);
+
         Map<String, Object> response = new HashMap<>();
         response.put("status", 201);
         response.put("message", "Participant created successfully");
         response.put("data", saved);
         return ResponseEntity.status(201).body(response);
+    }
+
+    /**
+     * Send thank you email asynchronously when user shows interest in a project
+     */
+    @Async
+    private void sendProjectInterestEmailAsync(Participants participant) {
+        try {
+            // Get project details
+            Optional<Project> projectOpt = ProjectServices.getProjectById(participant.getProjetcId());
+            if (projectOpt.isPresent()) {
+                Project project = projectOpt.get();
+
+                // Prepare project details for email
+                Map<String, Object> projectDetails = new HashMap<>();
+                projectDetails.put("category", getCategoryName(project.getCategoryId()));
+                projectDetails.put("location", project.getProjectLocation());
+                projectDetails.put("budget", project.getProjectBudget());
+                projectDetails.put("impact", project.getImpactpeople());
+
+                // Send project interest email
+                emailService.sendProjectInterestEmail(
+                        participant.getParticipantEmail(),
+                        participant.getParticipantName(),
+                        project.getProjectName(),
+                        projectDetails
+                );
+
+                logger.info("📧 Project interest email queued for: {} for project: {}",
+                        participant.getParticipantEmail(), project.getProjectName());
+            }
+        } catch (Exception e) {
+            logger.error("❌ Failed to queue project interest email: {}", e.getMessage());
+            // Don't throw exception - email failure should not affect participant creation
+        }
+    }
+
+    /**
+     * Helper method to get category name by ID
+     */
+    private String getCategoryName(int categoryId) {
+        try {
+            Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
+            return categoryOpt.map(Category::getCategoryName).orElse("N/A");
+        } catch (Exception e) {
+            return "N/A";
+        }
     }
 
     @GetMapping("/listAllParticipant")

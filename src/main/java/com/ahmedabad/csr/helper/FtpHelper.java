@@ -11,7 +11,7 @@ import org.apache.commons.net.ftp.FTPClient;
 @Component
 public class FtpHelper {
     private static final String FTP_SERVER = "31.97.234.95";
-    private static final String FTP_USERNAME = "u703629182.srsimages";
+    private static final String FTP_USERNAME = "u703629182.csrimages";
     private static final String FTP_PASSWORD = "z+jN&Sgo4;Hr8hI*";
     private static final int port = 21;
 
@@ -36,7 +36,7 @@ public class FtpHelper {
 
             if (done) {
 
-                return "https://lakhpatididi.in/SRS-documents/images" + remotefilepath;
+                return "https://amccsrportal.in/SRS-documents/images" + remotefilepath;
             } else {
 
                 int replayCode = ftp.getReplyCode();

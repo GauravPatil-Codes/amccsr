@@ -10,7 +10,7 @@ import org.apache.commons.net.ftp.FTPClient;
 @Component
 public class FtpVideoHelper {
 private static final String FTP_SERVER = "31.97.234.95";
-    private static final String FTP_USERNAME = "u703629182.srsvideos";
+    private static final String FTP_USERNAME = "u703629182.csrvideos";
     private static final String FTP_PASSWORD = "Nc#7v36F]$~CP7T5";
     private static final int port = 21;
 
@@ -39,7 +39,7 @@ private static final String FTP_SERVER = "31.97.234.95";
               
               if(done){
                 System.out.println("file uploded successfully");
-                return "https://lakhpatididi.in/SRS-documents/videos" + remotefilepath;
+                return "https://amccsrportal.in/SRS-documents/videos" + remotefilepath;
               }else{
                 System.out.println("file uploding failed");
                 int replayCode = ftp.getReplyCode();

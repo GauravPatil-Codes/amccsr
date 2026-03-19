@@ -10,13 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.ahmedabad.csr.entities.Companies;
 import com.ahmedabad.csr.repository.ApiResponse;
-import com.ahmedabad.csr.services.CompaniesServicesImpl;
+import com.ahmedabad.csr.services.CompaninesServices;
 
 @RestController
 public class CompaniesController {
 
     @Autowired
-    private CompaniesServicesImpl companiesService;
+    private CompaninesServices companiesService;
 
     @PostMapping("/addCompany")
     public ResponseEntity<ApiResponse<Companies>> createCompany(@RequestBody Companies company) {
