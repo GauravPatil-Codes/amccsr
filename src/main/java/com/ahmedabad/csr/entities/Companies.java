@@ -1,5 +1,7 @@
 package com.ahmedabad.csr.entities;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +23,20 @@ public class Companies {
      private int categoryId;
      private String status;
 	 private String password;
+	 private boolean isVerified = false;
+	 private String companyLogo;
+	 private Double turnover;
+     private String panCardFile;
+
+     //private String subTheme;
+     private java.time.LocalDate registeredDate;
+
+     private Integer finalSelectedProjectId;
+
+     private Boolean siteVisitConducted;
+     private String inPrincipalApproval;
+
+     private java.time.LocalDate mouSignedDate;
 	 public String getPassword() {
 		return password;
 	}
@@ -76,8 +92,79 @@ public class Companies {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public boolean isVerified() {
+    return isVerified;
+    }
+
+    public void setVerified(boolean isVerified) {
+    this.isVerified = isVerified;
+    }
+
+	public String getCompanyLogo() {
+    return companyLogo;
+    }
+   public void setCompanyLogo(String companyLogo) {
+    this.companyLogo = companyLogo;
+    }
+
+	public Double getTurnover() {
+        return turnover;
+    }
+
+    public void setTurnover(Double turnover) {
+        this.turnover = turnover;
+    }
+
+    public String getPanCardFile() {
+        return panCardFile;
+    }
+
+    public void setPanCardFile(String panCardFile) {
+        this.panCardFile = panCardFile;
+    }
+
+    public LocalDate getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(LocalDate registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public Integer getFinalSelectedProjectId() {
+        return finalSelectedProjectId;
+    }
+
+    public void setFinalSelectedProjectId(Integer finalSelectedProjectId) {
+        this.finalSelectedProjectId = finalSelectedProjectId;
+    }
+
+    public Boolean getSiteVisitConducted() {
+        return siteVisitConducted;
+    }
+
+    public void setSiteVisitConducted(Boolean siteVisitConducted) {
+        this.siteVisitConducted = siteVisitConducted;
+    }
+
+    public String getInPrincipalApproval() {
+        return inPrincipalApproval;
+    }
+
+    public void setInPrincipalApproval(String inPrincipalApproval) {
+        this.inPrincipalApproval = inPrincipalApproval;
+    }
+
+    public LocalDate getMouSignedDate() {
+        return mouSignedDate;
+    }
+
+    public void setMouSignedDate(LocalDate mouSignedDate) {
+        this.mouSignedDate = mouSignedDate;
+    }
+     
 	public Companies(int companieId, String authcomprepresentativename, String authcomprepresentativeemail,
-			String companyname, String companyurl, int categoryId, String status, String password, String role) {
+			String companyname, String companyurl, int categoryId, String status, String password, String role,boolean isVerified) {
 		super();
 		this.companieId = companieId;
 		this.authcomprepresentativename = authcomprepresentativename;
@@ -88,6 +175,8 @@ public class Companies {
 		this.status = status;
 		this.password=password;
 		this.role=role;
+		this.isVerified = isVerified;
+		this.companyLogo = companyLogo;
 	}
 	public Companies() {
 		super();
@@ -95,13 +184,28 @@ public class Companies {
 	}
 
 	@Override
-	public String toString() {
-		return "Companies [companieId=" + companieId + ", authcomprepresentativename=" + authcomprepresentativename
-				+ ", authcomprepresentativeemail=" + authcomprepresentativeemail + ", companyname=" + companyname
-				+ ", companyurl=" + companyurl + ", categoryId=" + categoryId + ", status=" + status + ", password="
-				+ password + ", role=" + role + "]";
-	}
-     
+public String toString() {
+    return "Companies [companieId=" + companieId
+            + ", authcomprepresentativename=" + authcomprepresentativename
+            + ", authcomprepresentativeemail=" + authcomprepresentativeemail
+            + ", companyname=" + companyname
+            + ", companyurl=" + companyurl
+            + ", categoryId=" + categoryId
+            + ", status=" + status
+            + ", role=" + role
+            + ", isVerified=" + isVerified
+            + ", companyLogo=" + companyLogo
+            + ", turnover=" + turnover
+            + ", panCardFile=" + panCardFile
+            + ", registeredDate=" + registeredDate
+            + ", finalSelectedProjectId=" + finalSelectedProjectId
+            + ", siteVisitConducted=" + siteVisitConducted
+            + ", inPrincipalApproval=" + inPrincipalApproval
+            + ", mouSignedDate=" + mouSignedDate
+            + "]";
+}
+
+    
      
    
 }

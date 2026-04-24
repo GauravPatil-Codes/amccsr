@@ -7,8 +7,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ahmedabad.csr.entities.Companies;
+import com.ahmedabad.csr.helper.FtpHelper;
 import com.ahmedabad.csr.repository.ApiResponse;
 import com.ahmedabad.csr.services.CompaninesServices;
 
@@ -17,18 +27,38 @@ public class CompaniesController {
 
     @Autowired
     private CompaninesServices companiesService;
+    @Autowired
+    private FtpHelper ftpHelper;
 
     @PostMapping("/addCompany")
-    public ResponseEntity<ApiResponse<Companies>> createCompany(@RequestBody Companies company) {
-        try {
-            Companies createdCompany = companiesService.addCompany(company);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(200, "Company created successfully", createdCompany));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse<>(400, "Error creating company: " + e.getMessage(), null));
-        }
+    public ResponseEntity<ApiResponse<Companies>> createCompany(
+        @RequestParam("logo") MultipartFile logoFile,
+        @RequestParam("panCard") MultipartFile panFile,
+        @ModelAttribute Companies company) {
+
+       
+         try {
+        // 🔹 Upload Logo
+        String logoName = System.currentTimeMillis() + "_" + logoFile.getOriginalFilename();
+        String logoUrl = ftpHelper.uploadFile(logoFile.getInputStream(), logoName);
+        company.setCompanyLogo(logoUrl);
+
+        // 🔹 Upload PAN Card (NEW)
+        String panName = System.currentTimeMillis() + "_" + panFile.getOriginalFilename();
+        String panUrl = ftpHelper.uploadFile(panFile.getInputStream(), panName);
+        company.setPanCardFile(panUrl);
+
+        Companies createdCompany = companiesService.addCompany(company);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(200, "Company created successfully", createdCompany));
+
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(400, "Error creating company: " + e.getMessage(), null));
     }
+ }
+    
 
     @GetMapping("/companyShowById/{id}")
     public ResponseEntity<ApiResponse<Companies>> getCompanyById(@PathVariable int id) {
@@ -53,15 +83,46 @@ public class CompaniesController {
 
     @PutMapping("/companyUpdate/{id}")
     public ResponseEntity<ApiResponse<Companies>> updateCompany(
-            @PathVariable int id, @RequestBody Companies companyDetails) {
-        try {
-            Companies updatedCompany = companiesService.updateCompany(id, companyDetails);
-            return ResponseEntity.ok(new ApiResponse<>(200, "Company updated successfully", updatedCompany));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(404, e.getMessage(), null));
+        @PathVariable int id,
+        @ModelAttribute Companies companyDetails,
+        @RequestParam(value = "logo", required = false) MultipartFile file) {
+
+    try {
+
+        if (file != null && !file.isEmpty()) {
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            String fileUrl = ftpHelper.uploadFile(file.getInputStream(), fileName);
+
+            companyDetails.setCompanyLogo(fileUrl);
         }
+
+        Companies updatedCompany = companiesService.updateCompany(id, companyDetails);
+
+        return ResponseEntity.ok(new ApiResponse<>(200, "Company updated successfully", updatedCompany));
+
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse<>(404, e.getMessage(), null));
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(400, e.getMessage(), null));
     }
+  }
+
+    @PutMapping("/verifyCompany/{id}")
+    public ResponseEntity<ApiResponse<Companies>> verifyCompany(@PathVariable int id) 
+    {
+    try {
+        Companies verifiedCompany = companiesService.verifyCompany(id);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(200, "Company verified successfully", verifiedCompany));
+
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse<>(404, e.getMessage(), null));
+    }
+   }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteCompany(@PathVariable int id) {

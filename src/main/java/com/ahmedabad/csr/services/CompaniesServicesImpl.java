@@ -1,6 +1,5 @@
 package com.ahmedabad.csr.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -47,8 +46,20 @@ public class CompaniesServicesImpl implements CompaninesServices {
             throw new IllegalArgumentException(
                     "A company with this email already exists: " + company.getAuthcomprepresentativeemail());
         }
-        Companies savedCompany = companiesRepository.save(company);
 
+        company.setVerified(false);
+        
+
+        company.setTurnover(company.getTurnover());
+        company.setPanCardFile(company.getPanCardFile());
+
+        company.setRegisteredDate(company.getRegisteredDate());
+        company.setFinalSelectedProjectId(company.getFinalSelectedProjectId());
+        company.setSiteVisitConducted(company.getSiteVisitConducted());
+        company.setInPrincipalApproval(company.getInPrincipalApproval());
+        company.setMouSignedDate(company.getMouSignedDate());
+        
+        Companies savedCompany = companiesRepository.save(company);
         // Send welcome email asynchronously
         sendWelcomeEmailAsync(company.getAuthcomprepresentativename(), company.getAuthcomprepresentativeemail());
 
@@ -89,6 +100,47 @@ public class CompaniesServicesImpl implements CompaninesServices {
         if (companyDetails.getAuthcomprepresentativeemail() != null) {
             company.setAuthcomprepresentativeemail(companyDetails.getAuthcomprepresentativeemail());
         }
+
+        if (companyDetails.getCompanyLogo() != null) {
+            company.setCompanyLogo(companyDetails.getCompanyLogo());
+        }
+        if (companyDetails.getTurnover() != null) {
+            company.setTurnover(companyDetails.getTurnover());
+        }
+
+        if (companyDetails.getPanCardFile() != null) {
+            company.setPanCardFile(companyDetails.getPanCardFile());
+        }
+
+        if (companyDetails.getRegisteredDate() != null) {
+            company.setRegisteredDate(companyDetails.getRegisteredDate());
+        }
+
+        if (companyDetails.getFinalSelectedProjectId() != null) {
+            company.setFinalSelectedProjectId(companyDetails.getFinalSelectedProjectId());
+        }
+
+        if (companyDetails.getSiteVisitConducted() != null) {
+            company.setSiteVisitConducted(companyDetails.getSiteVisitConducted());
+        }
+
+        if (companyDetails.getInPrincipalApproval() != null) {
+            company.setInPrincipalApproval(companyDetails.getInPrincipalApproval());
+        }
+
+        if (companyDetails.getMouSignedDate() != null) {
+            company.setMouSignedDate(companyDetails.getMouSignedDate());
+        }
+
+        return companiesRepository.save(company);
+    }
+       
+    @Override
+    public Companies verifyCompany(int companyId) {
+        Companies company = companiesRepository.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("Company not found with id: " + companyId));
+
+        company.setVerified(true);
 
         return companiesRepository.save(company);
     }

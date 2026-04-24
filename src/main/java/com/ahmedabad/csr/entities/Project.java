@@ -1,10 +1,10 @@
 package com.ahmedabad.csr.entities;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,6 +29,20 @@ public class Project {
     private String projectShortDescription;
 
     private String projectDEpartmentName;
+
+    // COMMON
+    private String theme;
+    private String companyName;
+
+    private Double totalProjectCost;
+    private Double csrFundingAmount;
+
+    private java.time.LocalDate mouSignedDate;
+    private java.time.LocalDate completionDate;
+
+    // ONLY FOR ONGOING
+    private String financialProgress;
+    private String physicalProgress;
     @ElementCollection
     private List<String> projectImages;
 
@@ -38,16 +52,32 @@ public class Project {
 
     }
 
-    @Override
-    public String toString() {
-        return "Project [projetcId=" + projetcId + ", projetcName=" + projetcName + ", projetcDescription="
-                + projetcDescription + ", projectStatus=" + projectStatus + ", ngoId=" + ngoId + ", categoryId="
-                + categoryId + ", projectMainImage=" + projectMainImage + ", projectBudget=" + projectBudget
-                + ", projectLocation=" + projectLocation + ", impactpeople=" + impactpeople
-                + ", projectShortDescription=" + projectShortDescription + ", projectDEpartmentName="
-                + projectDEpartmentName + ", projectImages=" + projectImages + ",companieId="+companieId+"]";
-    }
-
+   @Override
+public String toString() {
+    return "Project [projetcId=" + projetcId 
+            + ", projetcName=" + projetcName 
+            + ", projetcDescription=" + projetcDescription
+            + ", projectStatus=" + projectStatus 
+            + ", ngoId=" + ngoId 
+            + ", categoryId=" + categoryId
+            + ", projectMainImage=" + projectMainImage 
+            + ", projectBudget=" + projectBudget
+            + ", projectLocation=" + projectLocation 
+            + ", impactpeople=" + impactpeople
+            + ", projectShortDescription=" + projectShortDescription 
+            + ", projectDEpartmentName=" + projectDEpartmentName
+            + ", companieId=" + companieId
+            + ", theme=" + theme 
+            + ", companyName=" + companyName 
+            + ", totalProjectCost=" + totalProjectCost
+            + ", csrFundingAmount=" + csrFundingAmount
+            + ", mouSignedDate=" + mouSignedDate
+            + ", completionDate=" + completionDate
+            + ", physicalProgress=" + physicalProgress
+            + ", financialProgress=" + financialProgress
+            + ", projectImages=" + projectImages
+            + "]";
+}
     public int getProjectId() {
         return projetcId;
     }
@@ -177,5 +207,69 @@ public class Project {
     }
     public void setcompanieId(int companieId){
         this.companieId = companieId;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public Double getTotalProjectCost() {
+        return totalProjectCost;
+    }
+
+    public void setTotalProjectCost(Double totalProjectCost) {
+        this.totalProjectCost = totalProjectCost;
+    }
+
+    public Double getCsrFundingAmount() {
+        return csrFundingAmount;
+    }
+
+    public void setCsrFundingAmount(Double csrFundingAmount) {
+        this.csrFundingAmount = csrFundingAmount;
+    }
+
+    public LocalDate getMouSignedDate() {
+        return mouSignedDate;
+    }
+
+    public void setMouSignedDate(LocalDate mouSignedDate) {
+        this.mouSignedDate = mouSignedDate;
+    }
+
+    public LocalDate getCompletionDate() {
+        return completionDate;
+    }
+
+    public void setCompletionDate(LocalDate completionDate) {
+        this.completionDate = completionDate;
+    }
+
+    public String getFinancialProgress() {
+        return financialProgress;
+    }
+
+    public void setFinancialProgress(String financialProgress) {
+        this.financialProgress = financialProgress;
+    }
+
+    public String getPhysicalProgress() {
+        return physicalProgress;
+    }
+
+    public void setPhysicalProgress(String physicalProgress) {
+        this.physicalProgress = physicalProgress;
     }
 }

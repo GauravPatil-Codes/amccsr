@@ -5,11 +5,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ahmedabad.csr.entities.Project;
 import com.ahmedabad.csr.repository.ProjectRepository;
-import org.springframework.data.domain.Pageable;
 
 @Service
 public class ProjectServicesImpl implements ProjectServices {
@@ -21,29 +21,52 @@ public class ProjectServicesImpl implements ProjectServices {
         return projectRepository.save(project);
     }
 
-    @Override
-    public Project updateProject(int id, Project project) {
-        Project existing = projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Project not found"));
-        // Update fields
-        existing.setProjectName(project.getProjectName());
-        existing.setProjectDescription(project.getProjectDescription());
-        existing.setProjectStatus(project.getProjectStatus());
-        existing.setNgoId(project.getNgoId());
-        existing.setCategoryId(project.getCategoryId());
-        existing.setProjectImages(project.getProjectImages());
-        existing.setProjectMainImage(project.getProjectMainImage());
-        existing.setProjectBudget(project.getProjectBudget());
-        existing.setProjectLocation(project.getProjectLocation());
-        existing.setImpactpeople(project.getImpactpeople());
-        existing.setProjectShortDescription(project.getProjectShortDescription());
-        existing.setProjectDEpartmentName(project.getProjectDEpartmentName());
-        existing.setCategoryId(project.getCategoryId());
-        // existing.setProjectDocuments(project.getProjectDocuments());
+   @Override
+public Project updateProject(int id, Project project) {
 
-        return projectRepository.save(existing);
+    Project existing = projectRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Project not found"));
+
+    // 🔹 Existing fields
+    existing.setProjectName(project.getProjectName());
+    existing.setProjectDescription(project.getProjectDescription());
+    existing.setProjectStatus(project.getProjectStatus());
+    existing.setNgoId(project.getNgoId());
+    existing.setCategoryId(project.getCategoryId());
+    existing.setProjectImages(project.getProjectImages());
+    existing.setProjectMainImage(project.getProjectMainImage());
+    existing.setProjectBudget(project.getProjectBudget());
+    existing.setProjectLocation(project.getProjectLocation());
+    existing.setImpactpeople(project.getImpactpeople());
+    existing.setProjectShortDescription(project.getProjectShortDescription());
+    existing.setProjectDEpartmentName(project.getProjectDEpartmentName());
+    existing.setcompanieId(project.getcompanieId());
+
+    // 🔹 NEW COMMON FIELDS
+    existing.setTheme(project.getTheme());
+    existing.setCompanyName(project.getCompanyName());
+
+    existing.setTotalProjectCost(project.getTotalProjectCost());
+    existing.setCsrFundingAmount(project.getCsrFundingAmount());
+
+    existing.setMouSignedDate(project.getMouSignedDate());
+    existing.setCompletionDate(project.getCompletionDate());
+
+
+    // 🔥 CONDITIONAL LOGIC (IMPORTANT)
+    if ("ONGOING".equalsIgnoreCase(project.getProjectStatus())) {
+
+        existing.setFinancialProgress(project.getFinancialProgress());
+        existing.setPhysicalProgress(project.getPhysicalProgress());
+
+    } else if ("COMPLETED".equalsIgnoreCase(project.getProjectStatus())) {
+
+        existing.setFinancialProgress(null);
+        existing.setPhysicalProgress(null);
     }
 
-    @Override
+    return projectRepository.save(existing);
+}    @Override
     public void deleteProject(int projetcId) {
         Project projetc = projectRepository.findById(projetcId)
                 .orElseThrow(() -> new RuntimeException("Latest Update not found"));
