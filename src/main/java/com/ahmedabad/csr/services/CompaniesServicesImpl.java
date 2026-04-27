@@ -49,16 +49,6 @@ public class CompaniesServicesImpl implements CompaninesServices {
 
         company.setVerified(false);
         
-
-        company.setTurnover(company.getTurnover());
-        company.setPanCardFile(company.getPanCardFile());
-
-        company.setRegisteredDate(company.getRegisteredDate());
-        company.setFinalSelectedProjectId(company.getFinalSelectedProjectId());
-        company.setSiteVisitConducted(company.getSiteVisitConducted());
-        company.setInPrincipalApproval(company.getInPrincipalApproval());
-        company.setMouSignedDate(company.getMouSignedDate());
-        
         Companies savedCompany = companiesRepository.save(company);
         // Send welcome email asynchronously
         sendWelcomeEmailAsync(company.getAuthcomprepresentativename(), company.getAuthcomprepresentativeemail());
@@ -110,6 +100,9 @@ public class CompaniesServicesImpl implements CompaninesServices {
 
         if (companyDetails.getPanCardFile() != null) {
             company.setPanCardFile(companyDetails.getPanCardFile());
+        }
+        if (companyDetails.getSubTheme() != null) {
+            company.setSubTheme(companyDetails.getSubTheme());
         }
 
         if (companyDetails.getRegisteredDate() != null) {

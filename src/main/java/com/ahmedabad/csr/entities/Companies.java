@@ -28,7 +28,7 @@ public class Companies {
 	 private Double turnover;
      private String panCardFile;
 
-     //private String subTheme;
+     private String subTheme;
      private java.time.LocalDate registeredDate;
 
      private Integer finalSelectedProjectId;
@@ -162,9 +162,18 @@ public class Companies {
     public void setMouSignedDate(LocalDate mouSignedDate) {
         this.mouSignedDate = mouSignedDate;
     }
+    public String getSubTheme() {
+        return subTheme;
+    }
+
+    public void setSubTheme(String subTheme) {
+        this.subTheme = subTheme;
+    }
+
+
      
 	public Companies(int companieId, String authcomprepresentativename, String authcomprepresentativeemail,
-			String companyname, String companyurl, int categoryId, String status, String password, String role,boolean isVerified) {
+			String companyname, String companyurl, int categoryId, String status, String password, String role,boolean isVerified,String companyLogo) {
 		super();
 		this.companieId = companieId;
 		this.authcomprepresentativename = authcomprepresentativename;
@@ -197,6 +206,7 @@ public String toString() {
             + ", companyLogo=" + companyLogo
             + ", turnover=" + turnover
             + ", panCardFile=" + panCardFile
+            + ", subTheme=" + subTheme
             + ", registeredDate=" + registeredDate
             + ", finalSelectedProjectId=" + finalSelectedProjectId
             + ", siteVisitConducted=" + siteVisitConducted
@@ -204,6 +214,8 @@ public String toString() {
             + ", mouSignedDate=" + mouSignedDate
             + "]";
 }
+
+    
 
     
      
