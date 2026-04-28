@@ -82,33 +82,41 @@ public class CompaniesController {
     }
 
     @PutMapping("/companyUpdate/{id}")
-    public ResponseEntity<ApiResponse<Companies>> updateCompany(
-        @PathVariable int id,
-        @ModelAttribute Companies companyDetails,
-        @RequestParam(value = "logo", required = false) MultipartFile file) {
+      public ResponseEntity<ApiResponse<Companies>> updateCompany(
+            @PathVariable int id,
+            @ModelAttribute Companies companyDetails,
+            @RequestParam(value = "logo", required = false) MultipartFile logoFile,
+            @RequestParam(value = "panCard", required = false) MultipartFile panCardFile) {
 
-    try {
+        try {
 
-        if (file != null && !file.isEmpty()) {
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            String fileUrl = ftpHelper.uploadFile(file.getInputStream(), fileName);
+           if (logoFile != null && !logoFile.isEmpty()) {
+               String fileName = System.currentTimeMillis() + "_" + logoFile.getOriginalFilename();
+               String fileUrl = ftpHelper.uploadFile(logoFile.getInputStream(), fileName);
+                companyDetails.setCompanyLogo(fileUrl);
+           }
 
-            companyDetails.setCompanyLogo(fileUrl);
-        }
+           if (panCardFile != null && !panCardFile.isEmpty()) {
+               String fileName = System.currentTimeMillis() + "_" + panCardFile.getOriginalFilename();
+               String fileUrl = ftpHelper.uploadFile(panCardFile.getInputStream(), fileName);
+               companyDetails.setPanCardFile(fileUrl);
+            }
 
-        Companies updatedCompany = companiesService.updateCompany(id, companyDetails);
+        
+         Companies updatedCompany = companiesService.updateCompany(id, companyDetails);
 
-        return ResponseEntity.ok(new ApiResponse<>(200, "Company updated successfully", updatedCompany));
+         return ResponseEntity.ok(
+                new ApiResponse<>(200, "Company updated successfully", updatedCompany));
 
-    } catch (RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+       } catch (RuntimeException e) {
+             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ApiResponse<>(404, e.getMessage(), null));
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+
+       } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiResponse<>(400, e.getMessage(), null));
     }
-  }
-
+}
     @PutMapping("/verifyCompany/{id}")
     public ResponseEntity<ApiResponse<Companies>> verifyCompany(@PathVariable int id) 
     {
